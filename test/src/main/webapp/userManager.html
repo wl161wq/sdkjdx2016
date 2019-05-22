@@ -9,42 +9,108 @@
     <script type="text/javascript">
         $(function () {
             loadUserData();
-        });
+        })
         function loadUserData() {
-            $.ajax({
+            var table=layui.table;
+            table.render({
+                elem:"#userInfoList",
                 url:"user/findAllUser.do",
-                data:{
-                    "page":0,
-                    "pageSize":10
-                },
-                method:"get",
-                success:function (result) {
+                title:"用户信息表",
+                // where:{
+                //     "page":0,
+                //     "limit":5
+                // },
+                limit:5,
+                page:true,
+                limits:[5,10,20,50,100],
+                loading:true,
+                cols: [
+                       [
+                          {
+                              field:"",
+                              title:"ID",
+                              type:"numbers"
+                          },
+                        {
+                        field:"uname",
+                        title:"用户名",
+                        align:"center"
+                        },
+                        {
+                            field:"email",
+                            title:"邮箱",
+                            align:"center"
+                        },
+                        {
+                        field:"role",
+                        title:"角色",
+                        align:"center"
+                        },
+                        {
+                            field:"regeisterTime",
+                            title:"注册时间",
+                            align:"center"
+                        },
+                        {
+                            field:"lastLoginTime",
+                            title:"最后登陆时间",
+                            align:"center"
+                        },
+                           {
+                               field:"id",
+                               title:"操作",
+                               align:"center",
+                               templet:function (row) {
+                                   var edit= "<a href='' style='font-size: 25px;color: blue' title='编辑'><span class='layui-icon layui-icon-util'></span></a>"
+                                    var del="<a href='' style='font-size: 25px;color: red' title='删除'><span class='layui-icon layui-icon-delete'></span></a>"
+                                   return edit+"&nbsp;"+del;
+                               }
+                           }
 
-                },
-                error:function () {
-                    layer.msg("请求服务器超时！");
-                }
+                       ]
+                 ]
             })
+            // $.ajax({
+            //     url:"user/findAllUser.do",
+            //     data:{
+            //         "page":0,
+            //         "pageSize":10
+            //             },
+            //     method:"get",
+            //     success:function (result) {
+            //         layer.alert(result);
+            //     },
+            //     error:function () {
+            //         layer.msg("请求服务器超时！");
+            //     }
+            // })
         }
+
+
+
     </script>
 </head>
 <body>
     <div class="layui-elem-quote">
         用户管理功能
     </div>
-    <table class="layui-table">
-        <tr>
-            <td><input type="checkbox">全选</td>
-            <td>用户名</td>
-            <td>邮箱</td>
-            <td>角色</td>
-            <td>注册时间</td>
-            <td>最后一次登陆时间</td>
-            <td>操&nbsp;&nbsp;&nbsp;&nbsp;作</td>
-        </tr>
-        <tbody id="tb_body">
+    <table class="layui-table" id="userInfoList">
 
-        </tbody>
+    </table>
+</body>
+</html>
+<!--        <tr>-->
+<!--            <td><input type="checkbox">全选</td>-->
+<!--            <td>用户名</td>-->
+<!--            <td>邮箱</td>-->
+<!--            <td>角色</td>-->
+<!--            <td>注册时间</td>-->
+<!--            <td>最后一次登陆时间</td>-->
+<!--            <td>操&nbsp;&nbsp;&nbsp;&nbsp;作</td>-->
+<!--        </tr>-->
+<!--        <tbody id="tb_body">-->
+
+<!--        </tbody>-->
 <!--        <tr>-->
 <!--            <td><input type="checkbox" checked>全选</td>-->
 <!--            <td>张三</td>-->
@@ -58,7 +124,3 @@
 <!--                <a href="" title="修改"><span class="layui-icon layui-icon-edit"></span></a>-->
 <!--            </td>-->
 <!--        </tr>-->
-
-    </table>
-</body>
-</html>

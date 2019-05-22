@@ -11,6 +11,18 @@
         function loadUsermanagerPage() {
             $("#mainFrame").load("userManager.html");
         }
+        function loadanalysisPage() {
+            $("#mainFrame").load("analysis.html");
+        }
+        function exit() {
+            layer.confirm("是否退出系统?",{title:"退出系统",btn:["残忍离开","继续使用"]},function (index) {
+
+                if(index)
+                {window.location.href="index.html";}
+
+            })
+
+        }
 
     </script>
 </head>
@@ -43,7 +55,7 @@
                     <dd><a href=""><span class="layui-icon layui-icon-password"></span>修改密码</a></dd>
                 </dl>
             </li>
-            <li class="layui-nav-item"><a href="">退出</a></li>
+            <li class="layui-nav-item"><a href="javascript:exit();">退出</a></li>
         </ul>
     </div>
 
@@ -51,11 +63,11 @@
         <div class="layui-side-scroll">
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree"  lay-filter="test">
-                <li class="layui-nav-item layui-nav-itemed">
+                <li class="layui-nav-item ">
                     <a class="" href="javascript:;">用户管理</a>
                     <dl class="layui-nav-child">
                         <dd><a href="javascript:loadUsermanagerPage();"><span class="layui-icon layui-icon-about"></span>用户管理</a></dd>
-                        <dd><a href="javascript:;"><span class="layui-icon layui-icon-app"></span>统计分析</a></dd>
+                        <dd><a href="javascript:loadanalysisPage();"><span class="layui-icon layui-icon-app"></span>统计分析</a></dd>
 <!--                        <dd><a href="javascript:;"></a></dd>-->
 <!--                        <dd><a href="">超链接</a></dd>-->
                     </dl>
@@ -94,10 +106,9 @@
         <div style="padding: 15px; " id="mainFrame">内容主体区域</div>
     </div>
 
-    <div class="layui-footer">
+    <div class="layui-footer" align="center">
         <!-- 底部固定区域 -->
-        <br>
-        &copy;2018-2019 山东科技大学
+        &copy; 2018-2019 山东科技大学
     </div>
 </div>
 <script src="layui3.4/layui.all.js"></script>
