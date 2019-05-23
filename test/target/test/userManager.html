@@ -10,22 +10,69 @@
         $(function () {
             loadUserData();
         })
+        function openUserInfoEdit(id,uname,role,email) {
+                // $("#id").html(id),
+                // $("#uname").html(uname),
+                // $("#role").val(role),
+                // $("#email").val(email),
+                sessionStorage.setItem("id",id),
+                sessionStorage.setItem("uname",uname),
+                sessionStorage.setItem("role",role),
+                sessionStorage.setItem("email",email),
+
+            layer.open({
+                type:1,
+                title:"修改用户信息",
+                btn:["确认修改","取消"],
+                content:$("#editUserInfo").html(),
+                area:['400px','350px'],
+                yes:function (index) {
+                    layer.msg("test")
+                }
+            })
+
+        }
+        function deleteUserInfoById(id){
+            layer.confirm("是否真的删除本记录？",{icon:3,title:"警告"},function (index) {
+                layer.closeAll()
+                    $.ajax({
+                        url:"user/deleteUserInfoById.do",
+                        method:"post",
+                        data:{"id":id},
+                        success:function (result) {
+                            if(JSON.parse(result)=="success")
+                            {
+                                layer.msg("删除成功");
+                                layui.table.reload("userInfoList")}
+                            else {
+                                layer.msg("删除失败")
+                            }
+                        },
+                        error:function () {
+                            layui.msg("请求服务器失败")
+                        }
+                    })
+
+            });
+        }
         function loadUserData() {
             var table=layui.table;
             table.render({
+                toolbar:"#toolbar",
                 elem:"#userInfoList",
                 url:"user/findAllUser.do",
                 title:"用户信息表",
-                // where:{
-                //     "page":0,
-                //     "limit":5
-                // },
                 limit:5,
                 page:true,
                 limits:[5,10,20,50,100],
                 loading:true,
                 cols: [
                        [
+                           {
+                               field:"id",
+                               title:"ID",
+                               type:"checkbox"
+                           },
                           {
                               field:"",
                               title:"ID",
@@ -61,8 +108,10 @@
                                title:"操作",
                                align:"center",
                                templet:function (row) {
-                                   var edit= "<a href='' style='font-size: 25px;color: blue' title='编辑'><span class='layui-icon layui-icon-util'></span></a>"
-                                    var del="<a href='' style='font-size: 25px;color: red' title='删除'><span class='layui-icon layui-icon-delete'></span></a>"
+                                   var edit= '<a href="javascript:openUserInfoEdit(' + row.id+",'"+row.uname+"','"+row.role+"','"+row.email + '\');" style="font-size: 25px;color: blue" title="编辑">' +
+                                       "<span class='layui-icon layui-icon-util'></span></a>";
+                                    var del='<a href="javascript:deleteUserInfoById('+row.id+');" style="font-size: 25px;color: red" title="删除">' +
+                                        "<span class='layui-icon layui-icon-delete'></span></a>";
                                    return edit+"&nbsp;"+del;
                                }
                            }
@@ -70,20 +119,6 @@
                        ]
                  ]
             })
-            // $.ajax({
-            //     url:"user/findAllUser.do",
-            //     data:{
-            //         "page":0,
-            //         "pageSize":10
-            //             },
-            //     method:"get",
-            //     success:function (result) {
-            //         layer.alert(result);
-            //     },
-            //     error:function () {
-            //         layer.msg("请求服务器超时！");
-            //     }
-            // })
         }
 
 
@@ -94,33 +129,45 @@
     <div class="layui-elem-quote">
         用户管理功能
     </div>
+    <script type="text/html" id="toolbar">
+    <a href="" class="layui-btn layui-btn-danger">添加用户</a>
+        <a href="" class="layui-btn layui-btn-warm">删除用户</a>
+        <input class="layui-input-block" type="text" placeholder="请输入要查询的信息">
+    <a href="" class="layui-btn layui-btn-warm"><span class="layui-icon layui-icon-search"></span></a>
+</script>
     <table class="layui-table" id="userInfoList">
 
     </table>
+    <div align="center" id="editUserInfo" style="display: none" style="width: 300px">
+        <br>
+        <center>
+            <h2 >修改用户信息</h2>
+        </center>
+        <hr>
+        <form class="layui-form" id="form1">
+            <input type="hidden" id="id">
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="uname" name="uname" lay-verify="uname" autocomplete="off"
+                           placeholder="请输入用户名" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">邮箱</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="email" name="email" lay-verify="email" autocomplete="off"
+                           placeholder="请输入邮箱" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">角色</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="role" name="role" lay-verify="role" autocomplete="off"
+                           placeholder="请输入身份" class="layui-input">
+                </div>
+            </div>
+        </form>
+    </div>
 </body>
 </html>
-<!--        <tr>-->
-<!--            <td><input type="checkbox">全选</td>-->
-<!--            <td>用户名</td>-->
-<!--            <td>邮箱</td>-->
-<!--            <td>角色</td>-->
-<!--            <td>注册时间</td>-->
-<!--            <td>最后一次登陆时间</td>-->
-<!--            <td>操&nbsp;&nbsp;&nbsp;&nbsp;作</td>-->
-<!--        </tr>-->
-<!--        <tbody id="tb_body">-->
-
-<!--        </tbody>-->
-<!--        <tr>-->
-<!--            <td><input type="checkbox" checked>全选</td>-->
-<!--            <td>张三</td>-->
-<!--            <td>zs@163.com</td>-->
-<!--            <td>管理员</td>-->
-<!--            <td>2019-5-22</td>-->
-<!--            <td>2019-5-21</td>-->
-<!--            <td>-->
-<!--                <a href="" title="删除"><span class="layui-icon layui-icon-delete"></span></a>-->
-<!--                &nbsp;-->
-<!--                <a href="" title="修改"><span class="layui-icon layui-icon-edit"></span></a>-->
-<!--            </td>-->
-<!--        </tr>-->
