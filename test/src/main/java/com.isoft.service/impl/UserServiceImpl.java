@@ -14,9 +14,15 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     IUserDAO userDAO;
     @Override
-    public String login(String uname, String upwd) {
-        String str=userDAO.login(uname,upwd);
-        return str;
+    public List<Map<String,Object>> login(String uname, String upwd) {
+        try {
+            List<Map<String,Object>> list=userDAO.login(uname,upwd);
+            return list;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+
     }
 
     @Override
@@ -45,6 +51,7 @@ public class UserServiceImpl implements IUserService {
     {
         return userDAO.userTotal();
     }
+
 
 
 }

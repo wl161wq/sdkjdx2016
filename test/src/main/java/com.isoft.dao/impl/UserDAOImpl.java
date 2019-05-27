@@ -17,18 +17,21 @@ public class UserDAOImpl implements IUserDAO {
     @Autowired
     SqlSessionFactory sessionFactoryBean;
     @Override
-    public String login(String uname, String upwd) {
+    public List<Map<String,Object>> login(String uname, String upwd) throws Exception{
         SqlSession sqlSession=sessionFactoryBean.openSession(true);
         String statment="com.isoft.mapping.userMapper.login";
         Map map=new HashMap();
         map.put("uname",uname);
         map.put("upwd",upwd);
-        List<Map<String,Object>> list=sqlSession.selectList(statment,map);
-        if(list.size()>0){
-            return "success";
+        List list=sqlSession.selectList(statment,map);
+//        System.out.println(list);
+        if(list!=null){
+            statment="com.isoft.mapping.userMapper.updateLoginTime";
+            sqlSession.update(statment,uname);
+            return list;
         }
         else {
-            return "fault";
+            return null;
         }
     }
 
@@ -83,6 +86,9 @@ public class UserDAOImpl implements IUserDAO {
         }
         return 0;
     }
+
+
+
     @Override
     public  List<Map<String,Object>> userTotal() {
 

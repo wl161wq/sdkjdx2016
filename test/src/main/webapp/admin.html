@@ -4,10 +4,23 @@
     <meta charset="utf-8">
 <!--    页面自适应-->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>预警系统后台管理</title>
+    <title>医疗设备预警管理系统</title>
     <link rel="stylesheet" href="layui3.4/css/layui.css">
     <script type="text/javascript" src="jquery3.4.1/jquery-3.4.1.js"></script>
     <script type="text/javascript">
+        $(function () {
+            if(sessionStorage.getItem("uname")==null){
+                layer.msg("非法用户请登录")
+                setInterval("window.location.href=\"index.html\"",1000)
+            }
+            else
+            {
+                var uname=sessionStorage.getItem("uname")
+                $("#loginName").html(uname)
+            }
+
+
+        })
         function loadUsermanagerPage() {
             $("#mainFrame").load("userManager.html");
         }
@@ -15,11 +28,9 @@
             $("#mainFrame").load("analysis.html");
         }
         function exit() {
-            layer.confirm("是否退出系统?",{title:"退出系统",btn:["残忍离开","继续使用"]},function (index) {
-
-                if(index)
-                {window.location.href="index.html";}
-
+            layer.confirm("是否退出系统?",{title:"退出系统",btn:["残忍离开","继续使用"]},function () {
+                sessionStorage.clear()
+                window.location.href="index.html";
             })
 
         }
@@ -29,7 +40,7 @@
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
-        <div class="layui-logo">医疗设备预警管理</div>
+        <div class="layui-logo">医疗设备预警系统/管理员</div>
         <!-- 头部区域（可配合layui已有的水平导航） -->
 <!--        <ul class="layui-nav layui-layout-left">-->
 <!--            <li class="layui-nav-item"><a href="">控制台</a></li>-->
@@ -48,7 +59,7 @@
             <li class="layui-nav-item">
                 <a href="javascript:;">
                     <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-                    老张
+                    <label id="loginName"></label>
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href=""><span class=""></span> 个人中心</a></dd>

@@ -19,10 +19,20 @@ public class UserAction {
     IUserService userService;
     @RequestMapping("/login.do")
     @ResponseBody
-    public String login(String uname, String upwd) {
+    public Map<String,Object> login(String uname, String upwd) {
         /*硬编码*/
-        String str = userService.login(uname, upwd);
-        return str;
+        List<Map<String,Object>> list = userService.login(uname, upwd);
+        Map map=new HashMap();
+        List roleList=new ArrayList();
+        List unameList=new ArrayList();
+        for(Map mp :list){
+            roleList.add(mp.get("role"));
+            unameList.add(mp.get("uname"));
+        }
+        map.put("roleList",roleList);
+        map.put("unameList",unameList);
+        //System.out.println(map);
+        return map;
 
     }
 
@@ -35,7 +45,6 @@ public class UserAction {
             return "success";
         else
             return "fault";
-
     }
     @RequestMapping("/findAllUser.do")
     @ResponseBody
@@ -49,16 +58,27 @@ public class UserAction {
         map.put("data", list);
         return map;//返回json格式数据，但是不能转换，因为找不到json消息转换器
     }
+
     @RequestMapping("/deleteUserInfoById.do")
     @ResponseBody
-    public String deleteUserInfoById(int id) {
+    public String deleteUserInfoById(String id) {
         String result="success";
-        int i=userService.deleteUserInfoById(id);
+        int i=0;
+        try {
+            String [] arr=id.split(",");
+            for (String index:arr) {
+                i=userService.deleteUserInfoById(Integer.parseInt(index));
+            }
+        }catch (Exception e){
+            i=0;
+            e.printStackTrace();
+        }
         if(i == 0)
         {
             result= "fault";
         }
-        return result;//返回json格式数据，但是不能转换，因为找不到json消息转换器
+        return result;
+        //返回json格式数据，但是不能转换，因为找不到json消息转换器
     }
     @RequestMapping("/userTotal.do")
     @ResponseBody

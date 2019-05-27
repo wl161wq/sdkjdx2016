@@ -1,0 +1,88 @@
+<!DOCTYPE html>                  <!--本文档是h5得-->
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">         <!--响应式布局（自适应）-->
+    <title>医疗设备预警管理系统</title>
+    <link rel="stylesheet" href="layui3.4/css/layui.css">
+    <script type="text/javascript " src="jquery3.4.1/jquery-3.4.1.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            if(sessionStorage.getItem("uname")==null){
+                layer.msg("非法用户，请登录！");
+                // window.location.href="index.html";
+                setInterval("window.location.href=\"index.html\"",1000);
+            }else {
+                var uname = sessionStorage.getItem("uname");
+                $("#loginName").html(uname);
+            }
+        })
+        function loademployeeManagerPage() {
+            $("#mainFrame").load("employeeManager.html");
+        }
+        function loadAnalysisPage() {
+            $("#mainFrame").load("analysis.html");
+        }
+        function exit() {
+            layer.confirm("是否确认退出系统？",{title:"退出提示",btn:["残忍离开","继续使用"]},function (index) {
+                sessionStorage.clear();
+                window.location.href = "index.html";
+            })
+        }
+    </script>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">医疗设备预警系统/职员</div>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+                    <label id="loginName"></label>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href=""><span class="layui-icon layui-icon-auz"></span>个人中心</a></dd>
+                    <dd><a href=""><span class="layui-icon layui-icon-password"></span>修改密码</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="javaScript:exit();">退出</a></li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                <li class="layui-nav-item ">
+                    <a class="" href="javascript:;">用户查询</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:loademployeeManagerPage();"><span class="layui-icon layui-icon-about"></span>用户查询</a></dd>
+                        <dd><a href="javascript:loadAnalysisPage();"><span class="layui-icon layui-icon-app"></span>统计分析</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;" id="mainFrame">内容主体区域</div>
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        <br>
+        &copy;2019-2019 山东科技大学
+    </div>
+</div>
+<script src="layui3.4/layui.all.js"></script>
+<script>
+    //JavaScript代码区域
+    layui.use('element', function(){
+        var element = layui.element;
+
+    });
+</script>
+</body>
+</html>

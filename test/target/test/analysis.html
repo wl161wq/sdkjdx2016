@@ -11,6 +11,7 @@
     <script type="text/javascript">
         $(function () {
             bar();
+            pie();
         })
         function bar() {
             $.ajax({
@@ -31,10 +32,62 @@
                         },
                         yAxis: {},
                         series: [{
-                            name: '销量',
+                            name: '人数   ',
                             type: 'bar',
                             data: result.countList
                         }]
+                    };
+                    mychart.setOption(option);
+
+                },
+                error:function () {
+                    layer.msg("请求服务器失败")
+                }
+            })
+        }
+        function pie() {
+            $.ajax({
+                url:"user/userTotal.do",
+                success:function (data) {
+                    var result=JSON.parse(data)
+                    var mychart=echarts.init(document.getElementById("pie"));
+                    var option = {
+                        title : {
+                            text: '某站点用户访问来源',
+                            subtext: '纯属虚构',
+                            x:'center'
+                        },
+                        tooltip : {
+                            trigger: 'item',
+                            formatter: "{a} <br/>{b} : {c} ({d}%)"
+                        },
+                        legend: {
+                            orient: 'vertical',
+                            left: 'left',
+                            data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+                        },
+                        series : [
+                            {
+                                name: '访问来源',
+                                type: 'pie',
+                                radius : '55%',
+                                center: ['50%', '60%'],
+                                data:[
+                                    {value:335, name:'直接访问'},
+                                    {value:310, name:'邮件营销'},
+                                    {value:234, name:'联盟广告'},
+                                    {value:135, name:'视频广告'},
+                                    {value:1548, name:'搜索引擎'}
+                                ],
+                                itemStyle: {
+                                    emphasis: {
+                                        shadowBlur: 10,
+                                        shadowOffsetX: 0,
+                                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                    }
+                                }
+                            }
+                        ]
                     };
                     mychart.setOption(option);
 
@@ -47,6 +100,7 @@
 
 
         }
+
     </script>
 
 </head>
@@ -65,9 +119,9 @@
         <div class="layui-col-xs6">
             <div class="layui-card">
                 <div class="layui-card-header">
-                    角色数量统计-柱状图
+                    角色数量统计-饼图
                 </div>
-                <div class="layui-card-body" id="" style="height: 400px;width: 100%;" >
+                <div class="layui-card-body" id="pie" style="height: 400px;width: 100%;" >
 
                 </div>
             </div>
@@ -75,7 +129,14 @@
     </div>
     <div class="row">
         <div class="layui-col-xs6">
-            1
+            <div class="layui-card">
+                <div class="layui-card-header">
+
+                </div>
+                <div class="layui-card-body" id="" style="height: 400px;width: 100%;" >
+
+                </div>
+            </div>
         </div>
         <div class="layui-col-xs6">
             1

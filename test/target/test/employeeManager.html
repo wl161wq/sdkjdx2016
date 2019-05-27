@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="layui3.4/css/layui.css"/>
+    <script type="text/javascript" src="layui3.4/layui.all.js"></script>
+    <script type="text/javascript" src="jquery3.4.1/jquery-3.4.1.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            loadUserData();
+        })
+        // function openUserInfoEdit(id,uname,role,email) {
+        //     // $("#id").html(id),
+        //     // $("#uname").html(uname),
+        //     // $("#role").val(role),
+        //     // $("#email").val(email),
+        //     sessionStorage.setItem("id",id),
+        //         sessionStorage.setItem("uname",uname),
+        //         sessionStorage.setItem("role",role),
+        //         sessionStorage.setItem("email",email),
+        //
+        //         layer.open({
+        //             type:1,
+        //             title:"修改用户信息",
+        //             btn:["确认修改","取消"],
+        //             content:$("#editUserInfo").html(),
+        //             area:['400px','350px'],
+        //             yes:function (index) {
+        //                 layer.msg("test")
+        //             }
+        //         })
+        //
+        // }
+        // function deleteUserInfoById(id){
+        //     layer.confirm("是否真的删除本记录？",{icon:3,title:"警告"},function (index) {
+        //         layer.closeAll()
+        //         $.ajax({
+        //             url:"user/deleteUserInfoById.do",
+        //             method:"post",
+        //             data:{"id":id},
+        //             success:function (result) {
+        //                 if(JSON.parse(result)=="success")
+        //                 {
+        //                     layer.msg("删除成功");
+        //                     layui.table.reload("userInfoTable")}
+        //                 else {
+        //                     layer.msg("删除失败")
+        //                 }
+        //             },
+        //             error:function () {
+        //                 layui.msg("请求服务器失败")
+        //             }
+        //         })
+        //
+        //     });
+        // }
+        function loadUserData() {
+            var util=layui.util;
+            var table=layui.table;
+            table.render({
+                toolbar:"#toolbar",
+                elem:"#userInfoList",
+                url:"user/findAllUser.do",
+                id:"userInfoTable",
+                title:"用户信息表",
+                limit:5,
+                page:true,
+                event:true,
+                limits:[5,10,20,50,100],
+                loading:true,
+                size:"md",
+                cols: [
+                    [
+
+                        {
+                            field:"",
+                            title:"ID",
+                            type:"numbers"
+                        },
+                        {
+                            field:"uname",
+                            title:"用户名",
+                            align:"center"
+                        },
+                        {
+                            field:"email",
+                            title:"邮箱",
+                            align:"center"
+                        },
+                        {
+                            field:"role",
+                            title:"角色",
+                            align:"center",
+                            templet:function (row) {
+                                if(row.role=="admin"){return "管理员"}
+                                if(row.role=="employee"){return "职员"}
+                                if(row.role=="checker"){return "检修员"}
+                            }
+                        }
+                        // {
+                        //     field:"regeisterTime",
+                        //     title:"注册时间",
+                        //     align:"center",
+                        //     templet:function (row) {
+                        //         return util.toDateString(row.regeisterTime,"yyyy-MM-dd HH:mm:ss")
+                        //     }
+                        // },
+                        // {
+                        //     field:"lastLoginTime",
+                        //     title:"最后登陆时间",
+                        //     align:"center",
+                        //     templet:function (row) {
+                        //         return util.toDateString(row.lastLoginTime,"yyyy-MM-dd HH:mm:ss")
+                        //     }
+                        // }
+                        // {
+                        //     field:"id",
+                        //     title:"操作",
+                        //     align:"center",
+                        //     templet:function (row) {
+                        //         var edit= '<a href="javascript:openUserInfoEdit(' + row.id+",'"+row.uname+"','"+row.role+"','"+row.email + '\');" style="font-size: 25px;color: blue" title="编辑">' +
+                        //             "<span class='layui-icon layui-icon-util'></span></a>";
+                        //         var del='<a href="javascript:deleteUserInfoById('+row.id+');" style="font-size: 25px;color: red" title="删除">' +
+                        //             "<span class='layui-icon layui-icon-delete'></span></a>";
+                        //         return edit+"&nbsp;"+del;
+                        //     }
+                        // }
+
+                    ]
+                ]
+            })
+
+
+                // layui.table.on("toolbar(userTable)",function (rs){
+                //     var event=rs.event;
+                //     if(event=='add'){
+                //         layer.open({
+                //             type:1,
+                //             title:"添加用户信息",
+                //             btn:["确认添加","取消"],
+                //             content:$("#editUserInfo").html(),
+                //             area:['400px','350px'],
+                //
+                //             yes:function (index) {
+                //                 layer.msg("test");
+                //
+                //             },
+                //             success:function () {
+                //
+                //                 $("#lbl_title").html("添加用户信息");
+                //                 layui.use("form",function () {
+                //                     layui.form.rander();
+                //                 })
+                //             }
+                //
+                //         })
+                //     }
+                //     if(event=="del"){
+                //         var list=layui.table.checkStatus("userInfoTable").data
+                //         if(list.length==0){
+                //             layer.msg("请选择要删除的对象")
+                //         }
+                //         else {
+                //             layer.confirm("是否删除选中数据",{btn:["确定","取消"]},function () {
+                //                 layer.closeAll();
+                //                 var arr=new Array();
+                //                 $.each(list,function (index,row) {
+                //                     arr[index]=row.id
+                //                 });
+                //                 $.ajax({
+                //                     url:"user/deleteUserInfoById.do",
+                //                     data:{"id":arr.join(",".toString())},
+                //                     method:"post",
+                //                     success:function (result) {
+                //                         if(JSON.parse(result)=="success"){
+                //                             layer.msg("删除成功")
+                //                             layui.table.reload("userInfoList")
+                //                         }
+                //                         else {
+                //                             layer.msg("删除失败")
+                //                         }
+                //                     },
+                //                     error:function () {
+                //                         layer.msg("请求服务器失败")
+                //                     }
+                //                 })
+                //             })
+                //         }
+                //     }
+                // })
+        }
+
+
+
+    </script>
+</head>
+<body>
+<div class="layui-elem-quote">
+    用户查询功能
+</div>
+<script type="text/html" id="toolbar">
+<!--    <a href="javascript:void(0)" class="layui-btn layui-btn-danger" lay-event="add"><span class="layui-icon layui-icon-util"></span>添加用户</a>-->
+<!--    <a href="javascript:void(0)" class="layui-btn layui-btn-warm" lay-event="del"><span class="layui-icon layui-icon-delete"></span> 删除用户</a>-->
+    <center><input class="layui-input-block" type="text" placeholder="请输入要查询的信息">
+    <a href="" class="layui-btn layui-btn-warm"><span class="layui-icon layui-icon-search"></span></a></center>
+</script>
+<table class="layui-table" id="userInfoList" lay-filter="userTable">
+
+</table>
+<!--<div align="center" id="editUserInfo" style="display: none" style="width: 300px">-->
+<!--    <br>-->
+<!--    <center>-->
+<!--        <h2  id="lbl_title">添加用户信息</h2>-->
+<!--    </center>-->
+<!--    <hr>-->
+<!--    <form class="layui-form" id="form1">-->
+<!--        <input type="hidden" id="id">-->
+<!--        <div class="layui-form-item">-->
+<!--            <label class="layui-form-label">用户名</label>-->
+<!--            <div class="layui-input-inline">-->
+<!--                <input type="text" id="adduname" name="adduname" lay-verify="adduname" autocomplete="off"-->
+<!--                       placeholder="请输入用户名" class="layui-input">-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="layui-form-item">-->
+<!--            <label class="layui-form-label">邮箱</label>-->
+<!--            <div class="layui-input-inline">-->
+<!--                <input type="text" id="addemail" name="addemail" lay-verify="addemail" autocomplete="off"-->
+<!--                       placeholder="请输入邮箱" class="layui-input">-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="layui-form-item">-->
+<!--            <label class="layui-form-label">密码</label>-->
+<!--            <div class="layui-input-inline">-->
+<!--                <input type="password" id="addupwd" name="addupwd" lay-verify="addupwd" autocomplete="off"-->
+<!--                       placeholder="请输入密码" class="layui-input">-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </form>-->
+</div>
+</body>
+</html>
