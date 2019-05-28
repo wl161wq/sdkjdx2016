@@ -36,6 +36,15 @@ public class UserDAOImpl implements IUserDAO {
     }
 
     @Override
+    public List<Map<String, Object>> searchUserInfoByUname(String uname) throws Exception {
+        SqlSession sqlSession=sessionFactoryBean.openSession(true);
+        String statment="com.isoft.mapping.userMapper.searchUserInfoByUname";
+        List list=sqlSession.selectList(statment,uname);
+//        System.out.println(list);
+            return list;
+    }
+
+    @Override
     public boolean register(String uname, String upwd, String email) {
         SqlSession sqlSession=sessionFactoryBean.openSession(true);
         String statment="com.isoft.mapping.userMapper.register";
@@ -44,6 +53,36 @@ public class UserDAOImpl implements IUserDAO {
         map.put("upwd",upwd);
         map.put("email",email);
         int i=sqlSession.insert(statment,map);
+        if(i>0)
+            return true;
+        else
+            return false;
+    }
+    @Override
+    public boolean adduser(String uname,String email, String role) {
+        SqlSession sqlSession=sessionFactoryBean.openSession(true);
+        String statment="com.isoft.mapping.userMapper.adduser";
+        Map map=new HashMap();
+        map.put("uname",uname);
+        map.put("email",email);
+        map.put("role",role);
+        int i=sqlSession.insert(statment,map);
+        if(i>0)
+            return true;
+        else
+            return false;
+    }
+
+    @Override
+    public boolean updateUserInfo(String uname, String email, String role,int id) {
+        SqlSession sqlSession=sessionFactoryBean.openSession(true);
+        String statment="com.isoft.mapping.userMapper.updateUserInfo";
+        Map map=new HashMap();
+        map.put("uname",uname);
+        map.put("email",email);
+        map.put("role",role);
+        map.put("id",id);
+        int i=sqlSession.update(statment,map);
         if(i>0)
             return true;
         else

@@ -55,47 +55,67 @@
         //
         //     });
         // }
+        function searchUserInfoByUname() {
+            $.ajax({
+                url: "user/searchUserInfoByUname.do",
+                data: {"uname": $("#search").val()},
+                method: "post",
+                success: function (result) {
+                    //var result=JSON.parse(result1)
+                    alert(result)
+                },
+                error: function () {
+                    layer.msg("请求服务器失败")
+                }
+            })
+        }
         function loadUserData() {
-            var util=layui.util;
-            var table=layui.table;
+            var util = layui.util;
+            var table = layui.table;
             table.render({
-                toolbar:"#toolbar",
-                elem:"#userInfoList",
-                url:"user/findAllUser.do",
-                id:"userInfoTable",
-                title:"用户信息表",
-                limit:5,
-                page:true,
-                event:true,
-                limits:[5,10,20,50,100],
-                loading:true,
-                size:"md",
+                toolbar: "#toolbar",
+                elem: "#userInfoList",
+                url: "user/findAllUser.do",
+                id: "userInfoTable",
+                title: "用户信息表",
+                limit: 5,
+                page: true,
+                event: true,
+                limits: [5, 10, 20, 50, 100],
+                loading: true,
+                size: "md",
                 cols: [
                     [
 
                         {
-                            field:"",
-                            title:"ID",
-                            type:"numbers"
+                            field: "",
+                            title: "ID",
+                            type: "numbers"
                         },
                         {
-                            field:"uname",
-                            title:"用户名",
-                            align:"center"
+                            field: "uname",
+                            title: "用户名",
+                            align: "center"
                         },
                         {
-                            field:"email",
-                            title:"邮箱",
-                            align:"center"
+                            field: "email",
+                            title: "邮箱",
+                            align: "center"
                         },
                         {
-                            field:"role",
-                            title:"角色",
-                            align:"center",
-                            templet:function (row) {
-                                if(row.role=="admin"){return "管理员"}
-                                if(row.role=="employee"){return "职员"}
-                                if(row.role=="checker"){return "检修员"}
+                            field: "role",
+                            title: "角色",
+                            align: "center",
+                            templet: function (row) {
+                                if (row.role == "admin") {
+                                    return "管理员"
+                                }
+                                if (row.role == "employee") {
+                                    return "职员"
+                                }
+                                if (row.role == "checker") {
+                                    return "检修员"
+                                }
                             }
                         }
                         // {
@@ -130,6 +150,7 @@
                     ]
                 ]
             })
+        }
 
 
                 // layui.table.on("toolbar(userTable)",function (rs){
@@ -189,7 +210,7 @@
                 //         }
                 //     }
                 // })
-        }
+        // }
 
 
 
@@ -202,8 +223,9 @@
 <script type="text/html" id="toolbar">
 <!--    <a href="javascript:void(0)" class="layui-btn layui-btn-danger" lay-event="add"><span class="layui-icon layui-icon-util"></span>添加用户</a>-->
 <!--    <a href="javascript:void(0)" class="layui-btn layui-btn-warm" lay-event="del"><span class="layui-icon layui-icon-delete"></span> 删除用户</a>-->
-    <center><input class="layui-input-block" type="text" placeholder="请输入要查询的信息">
-    <a href="" class="layui-btn layui-btn-warm"><span class="layui-icon layui-icon-search"></span></a></center>
+    <center>
+        <input class="layui-input-block" type="text" placeholder="请输入要查询的信息" id="search"name="search"lay-verify="search">
+        <a href="javascript:searchUserInfoByUname();" class="layui-btn layui-btn-warm"><span class="layui-icon layui-icon-search"></span></a></center>
 </script>
 <table class="layui-table" id="userInfoList" lay-filter="userTable">
 

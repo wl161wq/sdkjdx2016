@@ -103,11 +103,21 @@
                         // layer.msg("11")
                         sessionStorage.setItem("uname",result.unameList);
                         if(result.roleList=='employee')
-                        {window.location.href="employee.html";}
+                        {
+                            sessionStorage.setItem("uname",result.unameList);//将用户名读进来传入下一页
+                            sessionStorage.setItem("role",result.roleList);
+                            sessionStorage.setItem("email",result.emailList);
+                            window.location.href="employee.html";}
                         if(result.roleList=='admin'){
+                            sessionStorage.setItem("uname",result.unameList);//将用户名读进来传入下一页
+                            sessionStorage.setItem("role",result.roleList);
+                            sessionStorage.setItem("email",result.emailList);
                             window.location.href="admin.html";
                         }
                         if(result.roleList=='checker'){
+                            sessionStorage.setItem("uname",result.unameList);//将用户名读进来传入下一页
+                            sessionStorage.setItem("role",result.roleList);
+                            sessionStorage.setItem("email",result.emailList);
                             window.location.href="checker.html";
                         }
                     }

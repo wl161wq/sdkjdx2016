@@ -191,6 +191,20 @@
             //     }
             // })
         }
+        function searchUserInfoByUname() {
+            $.ajax({
+                url: "user/searchUserInfoByUname.do",
+                data: {"uname": $("#search").val()},
+                method: "post",
+                success: function (result) {
+                    //var result=JSON.parse(result1)
+                    alert(result)
+                },
+                error: function () {
+                    layer.msg("请求服务器失败")
+                }
+            })
+        }
 
 
 
@@ -201,10 +215,9 @@
     用户查询功能
 </div>
 <script type="text/html" id="toolbar">
-    <!--    <a href="javascript:void(0)" class="layui-btn layui-btn-danger" lay-event="add"><span class="layui-icon layui-icon-util"></span>添加用户</a>-->
-    <!--    <a href="javascript:void(0)" class="layui-btn layui-btn-warm" lay-event="del"><span class="layui-icon layui-icon-delete"></span> 删除用户</a>-->
-    <center><input class="layui-input-block" type="text" placeholder="请输入要查询的信息">
-        <a href="" class="layui-btn layui-btn-warm"><span class="layui-icon layui-icon-search"></span></a></center>
+
+    <center><input class="layui-input-block" type="text" placeholder="请输入要查询的信息" id="search"name="search"lay-verify="search">
+        <a href="javascript:searchUserInfoByUname();" class="layui-btn layui-btn-warm"><span class="layui-icon layui-icon-search"></span></a></center>
 </script>
 <table class="layui-table" id="userInfoList" lay-filter="userTable">
 

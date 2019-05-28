@@ -26,9 +26,32 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public List<Map<String, Object>> searchUserInfoByUname(String uname) {
+        try {
+            List<Map<String,Object>> list=userDAO.searchUserInfoByUname(uname);
+            return list;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
     public boolean register(String uname, String upwd, String email) {
 
         boolean temp=userDAO.register(uname,upwd,email);
+        return temp;
+    }
+    @Override
+    public boolean adduser(String uname, String email, String role) {
+
+        boolean temp=userDAO.adduser(uname, email, role);
+        return temp;
+    }
+
+    @Override
+    public boolean updateUserInfo(String uname, String email, String role, int id) {
+        boolean temp=userDAO.updateUserInfo(uname,email,role,id);
         return temp;
     }
 

@@ -11,25 +11,23 @@
             loadUserData();
         })
         function openUserInfoEdit(id,uname,role,email) {
-                // $("#id").html(id),
-                // $("#uname").html(uname),
-                // $("#role").val(role),
-                // $("#email").val(email),
                 sessionStorage.setItem("id",id),
                 sessionStorage.setItem("uname",uname),
                 sessionStorage.setItem("role",role),
-                sessionStorage.setItem("email",email),
+                sessionStorage.setItem("email",email)
+                window.location.href="editUserInfo.html"
 
-            layer.open({
-                type:1,
-                title:"修改用户信息",
-                btn:["确认修改","取消"],
-                content:$("#editUserInfo").html(),
-                area:['400px','350px'],
-                yes:function (index) {
-                    layer.msg("test")
-                }
-            })
+
+            // layer.open({
+            //     type:1,
+            //     title:"修改用户信息",
+            //     btn:["确认修改","取消"],
+            //     content:$("#editUserInfo").html(),
+            //     area:['400px','350px'],
+            //     yes:function (index) {
+            //         layer.msg("test")
+            //     }
+            // })
 
         }
         function deleteUserInfoById(id){
@@ -54,6 +52,23 @@
                     })
 
             });
+        }
+        function searchUserInfoByUname() {
+            $.ajax({
+                url:"user/searchUserInfoByUname.do",
+                data:{"uname":$("#search").val()},
+                method:"post",
+                success:function (result) {
+                    //var result=JSON.parse(result1)
+                    alert(result)
+                },
+                error:function () {
+                    layer.msg("请求服务器失败")
+                }
+            })
+
+
+
         }
         function loadUserData() {
             var util=layui.util;
@@ -141,26 +156,45 @@
                 layui.table.on("toolbar(userTable)",function (rs){
                     var event=rs.event;
                     if(event=='add'){
-                        layer.open({
-                            type:1,
-                            title:"添加用户信息",
-                            btn:["确认添加","取消"],
-                            content:$("#editUserInfo").html(),
-                            area:['400px','350px'],
-
-                            yes:function (index) {
-                                layer.msg("test");
-
-                            },
-                            success:function () {
-
-                                $("#lbl_title").html("添加用户信息");
-                                layui.use("form",function () {
-                                    layui.form.rander();
-                                })
-                            }
-
-                        })
+                        window.location.href("adduser.html");
+                        // layer.open({
+                        //     type:1,
+                        //     title:"添加用户信息",
+                        //     btn:["确认添加","取消"],
+                        //     content:$("#editUserInfo").html(),
+                        //     area:['400px','350px'],
+                        //
+                        //     yes:function (index,layero) {
+                        //         $.ajax({
+                        //             url: "user/adduser.do",
+                        //             dataType:'json',
+                        //             state:3,
+                        //             data: JSON.stringify({
+                        //
+                        //                 "uname": $(layero).find("textarea[name=adduname]").val(),
+                        //                 "role": $(layero).find("textarea[name=addrole]").val(),
+                        //                 "email":$(layero).find("textarea[name=addemail]").val(),
+                        //             }),
+                        //             method: "post",
+                        //             success: function (result) {//这是回调函数
+                        //                 layer.alert("添加");
+                        //
+                        //             },
+                        //             error: function () {
+                        //                 layer.msg("请求服务器失败!");
+                        //             }
+                        //         });
+                        //
+                        //     }
+                        //     // success:function () {
+                        //     //
+                        //     //     $("#lbl_title").html("添加用户信息");
+                        //     //     layui.use("form",function () {
+                        //     //         layui.form.rander();
+                        //     //     })
+                        //     // }
+                        //
+                        // })
                     }
                     if(event=="del"){
                         var list=layui.table.checkStatus("userInfoTable").data
@@ -196,6 +230,11 @@
                     }
                 })
         }
+        // function Adduser() {
+        //     var adduname=sessionStorage.setItem("adduname");
+        //     sessionStorage.setItem("aduname",adduname)
+        //     window.location.href("adduser.html")
+        // }
 
 
 
@@ -206,44 +245,44 @@
         用户管理功能
     </div>
     <script type="text/html" id="toolbar">
-    <a href="javascript:void(0)" class="layui-btn layui-btn-danger" lay-event="add"><span class="layui-icon layui-icon-util"></span>添加用户</a>
+    <a href="adduser.html" class="layui-btn layui-btn-danger" lay-event="add"><span class="layui-icon layui-icon-util"></span>添加用户</a>
         <a href="javascript:void(0)" class="layui-btn layui-btn-warm" lay-event="del"><span class="layui-icon layui-icon-delete"></span> 删除用户</a>
-        <input class="layui-input-block" type="text" placeholder="请输入要查询的信息">
-    <a href="" class="layui-btn layui-btn-warm"><span class="layui-icon layui-icon-search"></span></a>
+        <input class="layui-input-block" type="text" placeholder="请输入要查询的信息" id="search"name="search"lay-verify="search">
+    <a href="javascript:searchUserInfoByUname();" class="layui-btn layui-btn-warm"><span class="layui-icon layui-icon-search"></span></a>
 </script>
     <table class="layui-table" id="userInfoList" lay-filter="userTable">
 
     </table>
-    <div align="center" id="editUserInfo" style="display: none" style="width: 300px">
-        <br>
-        <center>
-            <h2  id="lbl_title">添加用户信息</h2>
-        </center>
-        <hr>
-        <form class="layui-form" id="form1">
-            <input type="hidden" id="id">
-            <div class="layui-form-item">
-                <label class="layui-form-label">用户名</label>
-                <div class="layui-input-inline">
-                    <input type="text" id="adduname" name="adduname" lay-verify="adduname" autocomplete="off"
-                           placeholder="请输入用户名" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">邮箱</label>
-                <div class="layui-input-inline">
-                    <input type="text" id="addemail" name="addemail" lay-verify="addemail" autocomplete="off"
-                           placeholder="请输入邮箱" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">密码</label>
-                <div class="layui-input-inline">
-                    <input type="password" id="addupwd" name="addupwd" lay-verify="addupwd" autocomplete="off"
-                           placeholder="请输入密码" class="layui-input">
-                </div>
-            </div>
-        </form>
-    </div>
+<!--    <div align="center" id="editUserInfo" style="display: none" style="width: 300px">-->
+<!--        <br>-->
+<!--        <center>-->
+<!--            <h2  id="lbl_title">添加用户信息</h2>-->
+<!--        </center>-->
+<!--        <hr>-->
+<!--        <form class="layui-form" id="form1">-->
+<!--            <input type="hidden" id="id">-->
+<!--            <div class="layui-form-item">-->
+<!--                <label class="layui-form-label">用户名</label>-->
+<!--                <div class="layui-input-inline">-->
+<!--                    <input type="textarea" id="adduname" name="adduname" lay-verify="adduname" autocomplete="off"-->
+<!--                           placeholder="请输入用户名" class="layui-input">-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="layui-form-item">-->
+<!--                <label class="layui-form-label">邮箱</label>-->
+<!--                <div class="layui-input-inline">-->
+<!--                    <input type="textarea" id="addemail" name="addemail" lay-verify="addemail" autocomplete="off"-->
+<!--                           placeholder="请输入邮箱" class="layui-input">-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="layui-form-item">-->
+<!--                <label class="layui-form-label">角色</label>-->
+<!--                <div class="layui-input-inline">-->
+<!--                    <input type="textarea" id="addrole" name="addrole" lay-verify="addrole" autocomplete="off"-->
+<!--                           placeholder="请输入角色" class="layui-input">-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </form>-->
+<!--    </div>-->
 </body>
 </html>

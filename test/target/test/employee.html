@@ -17,6 +17,16 @@
                 $("#loginName").html(uname);
             }
         })
+        function loaduserPage() {
+            var uname=sessionStorage.getItem("uname")
+            var role=sessionStorage.getItem("role")
+            var email=sessionStorage.getItem("email")
+            sessionStorage.setItem("aduname",uname)
+            sessionStorage.setItem("adrole",role)
+            sessionStorage.setItem("ademail",email)
+            // alert(uname)
+            $("#mainFrame").load("userPage.html");
+        }
         function loademployeeManagerPage() {
             $("#mainFrame").load("employeeManager.html");
         }
@@ -42,7 +52,7 @@
                     <label id="loginName"></label>
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href=""><span class="layui-icon layui-icon-auz"></span>个人中心</a></dd>
+                    <dd><a href="javascript:loaduserPage();"><span class="layui-icon layui-icon-auz"></span>个人中心</a></dd>
                     <dd><a href=""><span class="layui-icon layui-icon-password"></span>修改密码</a></dd>
                 </dl>
             </li>

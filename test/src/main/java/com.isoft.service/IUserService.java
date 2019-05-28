@@ -5,7 +5,10 @@ import java.util.Map;
 
 public interface IUserService {
     List<Map<String,Object>> login(String uname, String upwd);
+    List<Map<String,Object>> searchUserInfoByUname(String uname);
     boolean register(String uname, String upwd, String email);
+    boolean adduser(String uname,String email, String role);
+    boolean updateUserInfo(String uname,String email,String role,int id);
     List<Map<String,Object>> findAllUser(int page,int pageSize);
     Map<String,Object> findUserCount();
     int deleteUserInfoById(int id);
