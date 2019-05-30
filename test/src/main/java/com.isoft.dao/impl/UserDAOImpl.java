@@ -36,10 +36,14 @@ public class UserDAOImpl implements IUserDAO {
     }
 
     @Override
-    public List<Map<String, Object>> searchUserInfoByUname(String uname) throws Exception {
+    public List<Map<String, Object>> searchUserInfoByUname(int page,int pageSize,String uname) throws Exception {
         SqlSession sqlSession=sessionFactoryBean.openSession(true);
         String statment="com.isoft.mapping.userMapper.searchUserInfoByUname";
-        List list=sqlSession.selectList(statment,uname);
+        Map map=new HashMap();
+        map.put("uname",uname);
+        map.put("page",(page-1)*pageSize);
+        map.put("pageSize",pageSize);
+        List list=sqlSession.selectList(statment,map);
 //        System.out.println(list);
             return list;
     }
@@ -82,6 +86,20 @@ public class UserDAOImpl implements IUserDAO {
         map.put("email",email);
         map.put("role",role);
         map.put("id",id);
+        int i=sqlSession.update(statment,map);
+        if(i>0)
+            return true;
+        else
+            return false;
+    }
+
+    @Override
+    public boolean changeUserPwd(String uname, String upwd) {
+        SqlSession sqlSession=sessionFactoryBean.openSession(true);
+        String statment="com.isoft.mapping.userMapper.changeUserPwd";
+        Map map=new HashMap();
+        map.put("uname",uname);
+        map.put("upwd",upwd);
         int i=sqlSession.update(statment,map);
         if(i>0)
             return true;

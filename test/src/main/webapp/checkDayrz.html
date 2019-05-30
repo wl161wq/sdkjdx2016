@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>检修日志</title>
+    <link rel="stylesheet" href="layui3.4/css/layui.css"/>
+    <script type="text/javascript" src="jquery3.4.1/jquery-3.4.1.js"></script>
+    <script type="text/javascript" src="layui3.4/layui.all.js"></script>
+    <script type="text/javascript">
+        // 自动加载函数
+        $(function () {
+            loadUserData();
+        });
+        function loadUserData() {
+            var table=layui.table;
+            var util=layui.util;
+            table.render({
+                toolbar:"#toolbar",
+                elem:"#userInfoList",
+                url:"equ/findcheck.do",
+                title:"用户信息表",
+                id:"userInfoTable",
+                limit:5,
+                page:true,
+                event:true,
+                size:"md",
+                limits:[10,20,50,100],
+                loading:true,
+                cols:[
+                    [{
+                        field:"id",
+                        title:"ID",
+                        type:"checkbox"
+                    },
+                        {
+                            field:"id",
+                            title:"ID",
+                            type:"numbers"
+                        },
+                        {
+                            field:"checker",
+                            title:"用户名",
+                            align:"center",
+                            edit:true
+                        },
+                        {
+                            field:"equ",
+                            title:"设备名称",
+                            align:"center"
+                        },
+                        {
+                            field:"lastcheckTime",
+                            title:"检修时间",
+                            align:"center",
+                            templet:function (row) {
+                                return util.toDateString(row.lastcheckTime,"yyyy-MM-dd- HH:mm:ss")
+                            }
+                        }
+                    ]
+                ]
+            });
+        }
+
+    </script>
+</head>
+<body>
+<div class="layui-elem-quote">
+    检修日志
+</div>
+<script type="text/html" >
+    <input class="layui-input-block" type="text" placeholder="请输入你要查询的信息">
+    <a href="" class="layui-btn-warm">
+        <span class="layui-icon layui-icon-search"></span>
+    </a>
+</script>
+<table class="layui-table" id="userInfoList" lay-filter="userTable">
+
+</table>
+
+</div>
+</body>
+
+</html>

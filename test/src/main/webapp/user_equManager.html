@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="layui3.4/css/layui.css"/>
+    <script type="text/javascript" src="jquery3.4.1/jquery-3.4.1.js"></script>
+    <script type="text/javascript" src="layui3.4/layui.all.js"></script>
+    <script type="text/javascript">
+        // 自动加载函数
+        $(function () {
+            loadUserData();
+        });
+        function searchEuqByEqu() {
+            var table=layui.table;
+            var util=layui.util;
+            table.render({
+                toolbar:"#toolbar",
+                elem:"#userInfoList",
+                url:"equ/searchEuqByEqu.do",
+                where:{equ:$("#search").val()},
+                title:"设备信息表",
+                id:"userInfoTable",
+                limit:5,
+                page:true,
+                event:true,
+                size:"md",
+                limits:[10,20,50,100],
+                loading:true,
+                cols:[
+                    [{
+                        field:"id",
+                        title:"ID",
+                        type:"checkbox"
+                    },
+                        {
+                            field:"id",
+                            title:"ID",
+                            type:"numbers"
+                            // width:20
+                        },
+                        {
+                            field:"equ",
+                            title:"设备名",
+                            align:"center",
+                            edit:true
+                            // width:100
+                        },
+                        {
+                            field:"Manager_cla",
+                            title:"器械类别",
+                            align:"center"
+                        },
+                        {
+                            field:"dep_of",
+                            title:"科室",
+                            align:"center"
+                            // width:150
+                        },
+                        {
+                            field:"num",
+                            title:"数量",
+                            align:"center"
+                            // width:150
+                        },
+                        {
+                            field:"impTime",
+                            title:"进货日期",
+                            align:"center",
+                            templet:function (row) {
+                                return util.toDateString(row.impTime,"yyyy-MM-dd- HH:mm:ss")
+                            }
+                            // width:150
+                        },
+                        {
+                            field:"proTime",
+                            title:"生产日期",
+                            align:"center",
+                            templet:function (row) {
+                                return util.toDateString(row.proTime,"yyyy-MM-dd- HH:mm:ss")
+                            }
+                        },
+                        {
+                            field:"equ_d",
+                            title:"设备周期",
+                            align:"center"
+                            // width:150
+                        },
+                        {
+                            field:"equ_status",
+                            title:"设备可用状态",
+                            align:"center",
+                            templet:function (row) {
+                                if(row.equ_status=="1"){return "可用"}
+                                if(row.equ_status=="0"){return "不可用"}
+                            }
+                            // width:150
+                        },
+                        {
+                            field:"lastcheckTime",
+                            title:"最后一次检修时间",
+                            align:"center",
+                            templet:function (row) {
+                                return util.toDateString(row.lastcheckTime,"yyyy-MM-dd- HH:mm:ss")
+                            }
+                        },
+                        {
+                            field:"check_status",
+                            title:"检修状态",
+                            align:"center",
+                            templet:function (row) {
+                                if(row.check_status=="0"){return "未检修"}
+                                if(row.check_status=="1"){return "正在检修"}
+                                if(row.check_status=="2"){return "已检修"}
+                            }
+                            // width:150
+                        },
+                        {
+                            field:"check_f",
+                            title:"检修频率",
+                            align:"center",
+                            // width:150
+                        }
+
+                    ]
+                ]
+            });
+
+        }
+        function loadUserData() {
+            var table=layui.table;
+            var util=layui.util;
+            table.render({
+                toolbar:"#toolbar",
+                elem:"#userInfoList",
+                url:"equ/findAllequ.do",
+                title:"用户信息表",
+                id:"userInfoTable",
+                limit:5,
+                page:true,
+                event:true,
+                size:"md",
+                limits:[10,20,50,100],
+                loading:true,
+                cols:[
+                    [{
+                        field:"id",
+                        title:"ID",
+                        type:"checkbox"
+                    },
+                        {
+                            field:"id",
+                            title:"ID",
+                            type:"numbers"
+                            // width:20
+                        },
+                        {
+                            field:"equ",
+                            title:"设备名",
+                            align:"center",
+                            edit:true
+                            // width:100
+                        },
+                        {
+                            field:"Manager_cla",
+                            title:"器械类别",
+                            align:"center"
+                        },
+                        {
+                            field:"dep_of",
+                            title:"科室",
+                            align:"center"
+                            // width:150
+                        },
+                        {
+                            field:"num",
+                            title:"数量",
+                            align:"center"
+                            // width:150
+                        },
+                        {
+                            field:"impTime",
+                            title:"进货日期",
+                            align:"center",
+                            templet:function (row) {
+                                return util.toDateString(row.impTime,"yyyy-MM-dd- HH:mm:ss")
+                            }
+                            // width:150
+                        },
+                        {
+                            field:"proTime",
+                            title:"生产日期",
+                            align:"center",
+                            templet:function (row) {
+                                return util.toDateString(row.proTime,"yyyy-MM-dd- HH:mm:ss")
+                            }
+                        },
+                        {
+                            field:"equ_d",
+                            title:"设备周期",
+                            align:"center"
+                            // width:150
+                        },
+                        {
+                            field:"equ_status",
+                            title:"设备可用状态",
+                            align:"center",
+                            templet:function (row) {
+                                if(row.equ_status=="1"){return "可用"}
+                                if(row.equ_status=="0"){return "不可用"}
+                            }
+                            // width:150
+                        }
+                    ]
+                ]
+            });
+            // layui.table.on("toolbar(userTable)",function (rs) {
+            //     var event=rs.event;
+            //     if(event=="add"){
+            //         layer.open({
+            //             type:1,
+            //             title:"添加用户信息",
+            //             btn:["确认添加","取消"],
+            //             content:$("#editUserInfo").html(),
+            //             area:["400px","350px"],
+            //             yes:function (index) {
+            //                 layer.msg("test");
+            //             },
+            //             success:function () {
+            //                 $("#lbl_title").html("添加用户信息");
+            //                 layui.use("form",function () {
+            //                     layui.form.render();
+            //                 })
+            //             }
+            //         });
+            //     }
+            //     if(event=="delete"){
+            //         var list=layui.table.checkStatus("userInfoTable").data;
+            //         if(list.length==0){
+            //             layer.msg("请选择一条数据");
+            //         }else {
+            //             layer.confirm("是否删除选中的数据?",{btn:["确定","取消"]},function () {
+            //                 layer.closeAll();
+            //                 var arr=new Array();
+            //                 $.each(list,function (index,row) {
+            //                     arr[index]=row.id;
+            //                 });
+            //                 $.ajax({
+            //                     url:"user/deleteUserInfoById.do",
+            //                     data:{"id":arr.join(",").toString()},
+            //                     method:"post",
+            //                     success:function (rsult) {
+            //                         if(JSON.parse(result)=="success"){
+            //                             layer.msg("删除成功！");
+            //                             layui.table.reload("userInfoTable");
+            //                         }
+            //                         else {
+            //                             layer.msg("删除失败！");
+            //                         }
+            //                     },
+            //                     error:function () {
+            //                         layer.msg("请求服务器失败！");
+            //                     }
+            //                 });
+            //             })
+            //         }
+            //     }
+            // });
+        }
+
+    </script>
+</head>
+<body>
+<div class="layui-elem-quote">
+    设备查询
+</div>
+<script type="text/html" id="toolbar">
+    <center>
+        <input class="layui-input-block" type="text" placeholder="请输入你要查询的信息" id="search" name="search" lay-verify="search">
+        <a href="javascript:searchEuqByEqu();" class="layui-btn-warm">
+            <span class="layui-icon layui-icon-search"></span>
+        </a>
+    </center>
+</script>
+<table class="layui-table" id="userInfoList" lay-filter="userTable">
+
+</table>
+
+</body>
+
+</html>

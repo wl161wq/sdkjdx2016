@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>修改用户</title>
+    <link rel="stylesheet" href="layui3.4/css/layui.css"/>
+    <script type="text/javascript" src="layui3.4/layui.all.js"></script>
+    <script type="text/javascript" src="jquery3.4.1/jquery-3.4.1.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var id=sessionStorage.getItem("id")
+            var num=sessionStorage.getItem("num")
+            var equ_status=sessionStorage.getItem("equ_status")//设备可用状态
+            if(equ_status=='1'){
+                    equ_status='可用'
+            }if(equ_status=='0'){
+                    equ_status='不可用'
+            }
+            var check_status=sessionStorage.getItem("check_status")//检修状态
+            if(check_status=='0'){
+                    check_status='未检修'
+            }if(check_status=='1'){
+                    check_status='正在检修'
+            }if(check_status=='2'){
+                    check_status='已检修'
+            }
+            var check_f=sessionStorage.getItem("check_f")
+            var equ=sessionStorage.getItem("equ")
+            var dep_of=sessionStorage.getItem("dep_of")
+            // var equ=sessionStorage.getItem("equ")
+            // var checker=sessionStorage.getItem("uname")
+            $("#equ").val(equ)
+            $("#dep_of").val(dep_of)
+            $("#num").val(num)
+            $("#equ_status").val(equ_status)
+            $("#check_status").val(check_status)
+            $("#check_f").val(check_f)
+
+        })
+        function editEquInfo() {
+            var num=$("#num").val();
+            if (num.length == 0) {
+                layer.tips("数量不能为空!", "#num", {time: 3000, tips: [2, "#FF0000"]});
+                return;
+            }
+            var equ_status=$("#equ_status").val();
+            if (equ_status.length == 0) {
+                layer.tips("设备状态不能为空!", "#equ_status", {time: 3000, tips: [2, "#FF0000"]});
+                return;
+            }
+            var check_status=$("#check_status").val();
+            if (check_status.length == 0) {
+                layer.tips("检修状态不能为空!", "#check_status", {time: 3000, tips: [2, "#FF0000"]});
+                return;
+            }
+            var check_f=$("#check_f").val();
+            if (check_f.length == 0) {
+                layer.tips("检修频率不能为空!", "#check_f", {time: 3000, tips: [2, "#FF0000"]});
+                return;
+            }
+            if($("#equ_status").val()=='可用'){$("#equ_status").val("1")}
+            if($("#equ_status").val()=='不可用'){$("#equ_status").val("0")}
+            if($("#check_status").val()=='正在检修'){$("#check_status").val("1")}
+            if($("#check_status").val()=='未检修'){$("#check_status").val("0")}
+            if($("#ckeck_status").val()=='已检修'){$("#check_status").val("2")}
+            // var equ=sessionStorage.getItem("equ")
+            // checker=sessionStorage.getItem("uname")
+            // alert(checker)
+            $.ajax({
+                url: "equ/updateEquInfo.do",
+                data: {
+                    "id":sessionStorage.getItem("id"),
+                    "num": $("#num").val(),
+                    "equ_status": $("#equ_status").val(),
+                    "check_status":$("#check_status").val(),
+                    "check_f":$("#check_f").val()
+                },
+                method: "post",
+                success: function (result) {//这是回调函数
+                    insertday()
+                },
+                error: function () {
+                    layer.msg("请求服务器失败!");
+                }
+            });
+
+        }
+        function insertday() {
+
+            // var equ=$("#equ").val()
+            // var checker=sessionStorage.getItem("uname")
+            // alert(equ+","+checker)
+            // alert(equ)
+            $.ajax({
+                url: "equ/insertday.do",
+                data: {
+                    "checker":sessionStorage.getItem("uname"),//检修员
+                    "equ":$("#equ").val(),
+                },
+                method: "post",
+                success: function (result) {//这是回调函数
+                    layer.alert("修改成功并更新日志！")
+                },
+                error: function () {
+                    layer.msg("更新日志失败!");
+                }
+            });
+        }
+        function back() {
+
+            location.reload()
+        }
+    </script>
+</head>
+<body>
+<!--div+css 布局-->
+<br><br><br><br>
+<center>
+    <div style="width: 45%">
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+            <legend>修改设备信息</legend>
+        </fieldset>
+        <div class="layui-tab">
+            <ul class="layui-tab-title">
+                <li class="layui-this">修改设备信息</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">设备名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" readonly id="equ" name="equ" lay-verify="equ" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">所属科室</label>
+                        <div class="layui-input-block">
+                            <input type="text" readonly id="dep_of" name="dep_of" lay-verify="dep_of" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">设备数量</label>
+                            <div class="layui-input-block">
+                                <input type="text" id="num" name="num" lay-verify="num" autocomplete="off"
+                                        class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">设备状态</label>
+                            <div class="layui-input-block">
+                                <input type="text" id="equ_status" name="equ_status" lay-verify="equ_status" autocomplete="off"
+                                        class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">检修状态</label>
+                            <div class="layui-input-block">
+                                <input type="text"  id="check_status" name="check_status" lay-verify="check_status"
+                                       autocomplete="off"
+                                        class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">检修频率</label>
+                            <div class="layui-input-block">
+                                <input type="text" id="check_f" name="check_f" lay-verify="check_f" autocomplete="off"
+                                        class="layui-input">
+                            </div>
+                        </div>
+                        <div align="center" class="layui-form-item">
+                            <a href="javascript:editEquInfo()" class="layui-btn layui-btn-normal">修改</a>
+                            <a href="javascript:back()" class="layui-btn layui-btn-danger">返回</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</center>
+<div class="layui-footer" align="center">
+    <br>
+    &copy;2018-2019 山东科技大学
+</div>
+
+
+</body>
+</html>

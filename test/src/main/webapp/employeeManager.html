@@ -56,18 +56,73 @@
         //     });
         // }
         function searchUserInfoByUname() {
-            $.ajax({
-                url: "user/searchUserInfoByUname.do",
-                data: {"uname": $("#search").val()},
-                method: "post",
-                success: function (result) {
-                    //var result=JSON.parse(result1)
-                    alert(result)
-                },
-                error: function () {
-                    layer.msg("请求服务器失败")
-                }
+            var util=layui.util;
+            var table=layui.table;
+            // $.ajax({
+            //     url:"user/searchUserInfoByUname.do",
+            //     data:{"uname":$("#search").val()},
+            //     method:"post",
+            //     success:function (result) {
+            //         //var result=JSON.parse(result1)
+            //         alert(result)
+            //         // layui.table.reload("userInfoTable");
+            //     },
+            //     error:function () {
+            //         layer.msg("请求服务器失败")
+            //     }
+            // });
+            table.render({
+                toolbar:"#toolbar",
+                elem:"#userInfoList",
+                url:"user/searchUserInfoByUname.do",
+                where:{"uname":$("#search").val()},
+                id:"userInfoTable",
+                title:"用户信息表",
+                limit:5,
+                page:true,
+                event:true,
+                loading:true,
+                size:"md",
+                cols: [
+                    [
+                        {
+                            field:"id",
+                            title:"ID",
+                            type:"checkbox"
+                        },
+                        {
+                            field:"",
+                            title:"ID",
+                            type:"numbers"
+                        },
+                        {
+                            field:"uname",
+                            title:"用户名",
+                            align:"center",
+                            edit:true
+                        },
+                        {
+                            field:"email",
+                            title:"邮箱",
+                            align:"center",
+                            edit:true
+                        },
+                        {
+                            field:"role",
+                            title:"角色",
+                            align:"center",
+                            templet:function (row) {
+                                if(row.role=="admin"){return "管理员"}
+                                if(row.role=="employee"){return "职员"}
+                                if(row.role=="checker"){return "检修员"}
+                            }
+                        }
+                    ]
+                ]
             })
+
+
+
         }
         function loadUserData() {
             var util = layui.util;

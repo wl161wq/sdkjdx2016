@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="layui3.4/css/layui.css"/>
+    <script type="text/javascript" src="jquery3.4.1/jquery-3.4.1.js"></script>
+    <script type="text/javascript" src="layui3.4/layui.all.js"></script>
+    <script type="text/javascript">
+        // 自动加载函数
+        $(function () {
+            loadUserData();
+        });
+        function loadUserData() {
+            var table=layui.table;
+            var util=layui.util;
+            table.render({
+                toolbar:"#toolbar",
+                elem:"#userInfoList",
+                url:"equ/findChcekequ.do",
+                title:"设备信息表",
+                id:"userInfoTable",
+                limit:5,
+                page:true,
+                event:true,
+                size:"md",
+                limits:[10,20,50,100],
+                loading:true,
+                cols:[
+                    [{
+                        field:"id",
+                        title:"ID",
+                        type:"checkbox"
+                    },
+                        {
+                            field:"id",
+                            title:"ID",
+                            type:"numbers"
+                            // width:20
+                        },
+                        {
+                            field:"equ",
+                            title:"设备名",
+                            align:"center",
+                            edit:true
+                            // width:100
+                        },
+                        {
+                            field:"dep_of",
+                            title:"科室",
+                            align:"center"
+                            // width:150
+                        },
+                        {
+                            field:"num",
+                            title:"数量",
+                            align:"center"
+                            // width:150
+                        },
+                        {
+                            field:"lastcheckTime",
+                            title:"最后一次检修时间",
+                            align:"center",
+                            templet:function (row) {
+                                return util.toDateString(row.lastcheckTime,"yyyy-MM-dd- HH:mm:ss")
+                            }
+                        },
+                        {
+                            field:"equ_status",
+                            title:"设备可用状态",
+                            align:"center",
+                            templet:function (row) {
+                                if(row.equ_status=="1"){return "可用"}
+                                if(row.equ_status=="0"){return "不可用"}
+                            }
+                            // width:150
+                        }
+                    ]
+                ]
+            });
+        }
+
+    </script>
+</head>
+<body>
+<div class="layui-elem-quote">
+    查看需要检修的设备
+</div>
+<script type="text/html" >
+
+</script>
+<table class="layui-table" id="userInfoList" lay-filter="userTable">
+
+</table>
+
+</body>
+
+</html>

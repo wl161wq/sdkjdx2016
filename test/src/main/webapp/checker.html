@@ -1,70 +1,71 @@
-<!DOCTYPE html>
+<!DOCTYPE html>                  <!--本文档是h5得-->
 <html>
 <head>
     <meta charset="utf-8">
-    <!--    页面自适应-->
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>医疗设备预警管理系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">         <!--响应式布局（自适应）-->
+    <title>预警系统后台管理</title>
     <link rel="stylesheet" href="layui3.4/css/layui.css">
-    <script type="text/javascript" src="jquery3.4.1/jquery-3.4.1.js"></script>
+    <script type="text/javascript " src="jquery3.4.1/jquery-3.4.1.js"></script>
+    <link rel="stylesheet" href="layui3.4/css/layui.css" media="all">
+    <script src="layui3.4/layui.js"></script>
+    <script>
+        layui.use('carousel', function(){
+            var carousel = layui.carousel;
+            //建造实例
+            carousel.render({
+                elem: '#test1',
+                width: '100%' ,//设置容器宽度
+                // height:'500px',
+                arrow: 'always', //始终显示箭头
+                anim: 'default', //切换动画方式
+                autoplay:'true',
+                interval:'2000'
+            });
+        });
+    </script>
     <script type="text/javascript">
         $(function () {
             if(sessionStorage.getItem("uname")==null){
-                layer.msg("非法用户请登录")
-                setInterval("window.location.href=\"index.html\"",1000)
+                layer.msg("非法用户，请登录！");
+                // window.location.href="index.html";
+                setInterval("window.location.href=\"index.html\"",1000);
+            }else {
+                var uname = sessionStorage.getItem("uname");
+                $("#loginName").html(uname);
             }
-            else
-            {
-                var uname=sessionStorage.getItem("uname")
-                $("#loginName").html(uname)
-            }
-
-
         })
-        function loaduserPage() {
+        function loadequ_analysisPage() {
+            $("#mainFrame").load("equ_analysis.html");
+        }
+        function loadequ_equckeckPage() {
+            $("#mainFrame").load("equ_check.html");
+        }
+        function loadequ_managerPage() {
             var uname=sessionStorage.getItem("uname")
-            var role=sessionStorage.getItem("role")
-            var email=sessionStorage.getItem("email")
-            sessionStorage.setItem("aduname",uname)
-            sessionStorage.setItem("adrole",role)
-            sessionStorage.setItem("ademail",email)
-            // alert(uname)
-            $("#mainFrame").load("userPage.html");
+            sessionStorage.setItem("uname",uname)
+            $("#mainFrame").load("checker_equManager.html");
         }
-        function loadUsermanagerPage() {
-            $("#mainFrame").load("checkerManager.html");
+        function loadcheckerManagerPage() {
+            $("#mainFrame").load("employeeManager.html");
         }
-        function loadanalysisPage() {
+        function loadequ_ckeckDayrzPage() {
+            $("#mainFrame").load("checkDayrz.html");
+        }
+        function loadAnalysisPage() {
             $("#mainFrame").load("analysis.html");
         }
         function exit() {
-            layer.confirm("是否退出系统?",{title:"退出系统",btn:["残忍离开","继续使用"]},function () {
-                sessionStorage.clear()
-                window.location.href="index.html";
+            layer.confirm("是否确认退出系统？",{title:"退出提示",btn:["残忍离开","继续使用"]},function (index) {
+                sessionStorage.clear();
+                window.location.href = "index.html";
             })
-
         }
-
     </script>
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
         <div class="layui-logo">医疗设备预警系统/检修员</div>
-        <!-- 头部区域（可配合layui已有的水平导航） -->
-        <!--        <ul class="layui-nav layui-layout-left">-->
-        <!--            <li class="layui-nav-item"><a href="">控制台</a></li>-->
-        <!--            <li class="layui-nav-item"><a href="">商品管理</a></li>-->
-        <!--            <li class="layui-nav-item"><a href="">用户</a></li>-->
-        <!--            <li class="layui-nav-item">-->
-        <!--                <a href="javascript:;">其它系统</a>-->
-        <!--                <dl class="layui-nav-child">-->
-        <!--                    <dd><a href="">邮件管理</a></dd>-->
-        <!--                    <dd><a href="">消息管理</a></dd>-->
-        <!--                    <dd><a href="">授权管理</a></dd>-->
-        <!--                </dl>-->
-        <!--            </li>-->
-        <!--        </ul>-->
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="javascript:;">
@@ -72,11 +73,11 @@
                     <label id="loginName"></label>
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="javascript:loaduserPage();"><span class=""></span> 个人中心</a></dd>
+                    <dd><a href=""><span class="layui-icon layui-icon-auz"></span>个人中心</a></dd>
                     <dd><a href=""><span class="layui-icon layui-icon-password"></span>修改密码</a></dd>
                 </dl>
             </li>
-            <li class="layui-nav-item"><a href="javascript:exit();">退出</a></li>
+            <li class="layui-nav-item"><a href="javaScript:exit();">退出</a></li>
         </ul>
     </div>
 
@@ -85,51 +86,51 @@
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree"  lay-filter="test">
                 <li class="layui-nav-item ">
-                    <a class="" href="javascript:;">用户查询</a>
+                    <a class="" href="javascript:;">用户管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:loadUsermanagerPage();"><span class="layui-icon layui-icon-about"></span>用户查询</a></dd>
-                        <dd><a href="javascript:loadanalysisPage();"><span class="layui-icon layui-icon-app"></span>统计分析</a></dd>
-                        <!--                        <dd><a href="javascript:;"></a></dd>-->
-                        <!--                        <dd><a href="">超链接</a></dd>-->
+                        <dd><a href="javascript:loadcheckerManagerPage();"><span class="layui-icon layui-icon-about"></span>用户管理</a></dd>
+                        <dd><a href="javascript:loadAnalysisPage();"><span class="layui-icon layui-icon-app"></span>统计分析</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
                     <a href="javascript:;">医疗设备管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">设备管理</a></dd>
-                        <dd><a href="javascript:;">统计分析</a></dd>
-                        <!--                        <dd><a href="">超链接</a></dd>-->
+                        <dd><a href="javascript:loadequ_managerPage();;">设备管理</a></dd>
+                        <dd><a href="javascript:loadequ_analysisPage();">统计分析</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;">检修管理</a>
+                    <a href="javascript:;">检修</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">设备检修</a></dd>
-                        <dd><a href="javascript:;">检修日志</a></dd>
-                        <!--                        <dd><a href="">超链接</a></dd>-->
+                        <dd><a href="javascript:loadequ_equckeckPage();">设备检修</a></dd>
+                        <dd><a href="javascript:loadequ_ckeckDayrzPage();">检修日志</a></dd>
                     </dl>
                 </li>
-<!--                <li class="layui-nav-item">-->
-<!--                    <a href="javascript:;">系统管理</a>-->
-<!--                    <dl class="layui-nav-child">-->
-<!--                        <dd><a href="javascript:;">权限分配</a></dd>-->
-<!--                        <dd><a href="javascript:;">注销系统</a></dd>-->
-<!--                        &lt;!&ndash;                        <dd><a href="">超链接</a></dd>&ndash;&gt;-->
-<!--                    </dl>-->
-<!--                </li>-->
 
             </ul>
         </div>
     </div>
 
-    <div class="layui-body" id="">
-        <!-- 内容主体区域 -->
-        <div style="padding: 15px; " id="mainFrame">内容主体区域</div>
+    <div class="layui-body">
+        <div style="padding: 15px;" id="mainFrame">
+            <div class="layui-carousel" id="test1" >
+                <div carousel-item>
+                    <div><img src="image/2.jpg" width="100%" height="100%"/></div>
+                    <div><img src="image/1.jpg" width="100%" height="100%"/></div>
+                    <div><img src="image/3.jpg" width="100%" height="100%"/></div>
+                    <div><img src="image/4.jpg" width="100%" height="100%"/></div>
+                    <div><img src="image/5.jpg" width="100%" height="100%"/></div>
+                    <div><div><p style="font-size: 200px;" align="center">Welcome!</p></div></div>
+                </div>
+            </div>
+            <h2>Welcom!</h2>
+        </div>
     </div>
 
-    <div class="layui-footer" align="center">
+    <div class="layui-footer">
         <!-- 底部固定区域 -->
-        &copy; 2018-2019 山东科技大学
+        <br>
+        &copy;2019-2019 山东科技大学
     </div>
 </div>
 <script src="layui3.4/layui.all.js"></script>

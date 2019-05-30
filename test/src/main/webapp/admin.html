@@ -13,23 +13,45 @@
 
                 layer.msg("非法用户请登录")
                 setInterval("window.location.href=\"index.html\"",1000)
+                return
             }
+            // if(sessionStorage.getItem("role")!="admin"){
+            //     layer.msg("您非管理员，无法登陆此页面")
+            //     setInterval("window.location.href=\"index.html\"",1000)
+            // }
             else
             {
                 var uname=sessionStorage.getItem("uname")
                 $("#loginName").html(uname)
             }
         })
+        function loadPwdPage() {
+            var upwd=sessionStorage.getItem("upwd")
+            var id=sessionStorage.getItem("id")
+            //var uname=sessionStorage.getItem("uname")
+            //var role=sessionStorage.getItem("role")
+            //var email=sessionStorage.getItem("email")
+            sessionStorage.setItem("upwd",upwd)
+            //sessionStorage.setItem("aduname",uname)
+            sessionStorage.setItem("id",id)
+            //sessionStorage.setItem("adrole",role)
+            //sessionStorage.setItem("ademail",email)
+            // alert(uname)
+            $("#mainFrame").load("changePwd.html");
+
+        }
         function loadUsermanagerPage() {
             // var uname=sessionStorage.getItem("uname")
             // sessionStorage.setItem("adduname",uname)
             $("#mainFrame").load("userManager.html");
         }
         function loaduserPage() {
+            var id=sessionStorage.getItem("id")
             var uname=sessionStorage.getItem("uname")
             var role=sessionStorage.getItem("role")
             var email=sessionStorage.getItem("email")
             sessionStorage.setItem("aduname",uname)
+            sessionStorage.setItem("id",id)
             sessionStorage.setItem("adrole",role)
             sessionStorage.setItem("ademail",email)
             // alert(uname)
@@ -44,6 +66,19 @@
                 window.location.href="index.html";
             })
 
+        }
+        function logoff() {
+            layer.confirm("是否注销系统?",{title:"注销系统",btn:["残忍注销","继续使用"]},function () {
+                sessionStorage.clear()
+                window.location.href="logoff.html";
+            })
+
+        }
+        function openEqu() {
+            $("#mainFrame").load("user_equManager.html");
+        }
+        function onenanalysis() {
+            $("#mainFrame").load("equ_analysis.html");
         }
 
     </script>
@@ -74,7 +109,7 @@
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="javascript:loaduserPage();"><span class=""></span> 个人中心</a></dd>
-                    <dd><a href=""><span class="layui-icon layui-icon-password"></span>修改密码</a></dd>
+                    <dd><a href="javascript:loadPwdPage();"><span class="layui-icon layui-icon-password"></span>修改密码</a></dd>
                 </dl>
             </li>
             <li class="layui-nav-item"><a href="javascript:exit();">退出</a></li>
@@ -97,24 +132,15 @@
                 <li class="layui-nav-item">
                     <a href="javascript:;">医疗设备管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">设备管理</a></dd>
-                        <dd><a href="javascript:;">统计分析</a></dd>
+                        <dd><a href="javascript:openEqu();">设备管理</a></dd>
+                        <dd><a href="javascript:onenanalysis();">统计分析</a></dd>
 <!--                        <dd><a href="">超链接</a></dd>-->
-                    </dl>
-                </li>
-                <li class="layui-nav-item">
-                    <a href="javascript:;">检修管理</a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">设备检修</a></dd>
-                        <dd><a href="javascript:;">检修日志</a></dd>
-                        <!--                        <dd><a href="">超链接</a></dd>-->
                     </dl>
                 </li>
                 <li class="layui-nav-item">
                     <a href="javascript:;">系统管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">权限分配</a></dd>
-                        <dd><a href="javascript:;">注销系统</a></dd>
+                        <dd><a href="javascript: logoff();">注销系统</a></dd>
                         <!--                        <dd><a href="">超链接</a></dd>-->
                     </dl>
                 </li>

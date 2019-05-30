@@ -104,17 +104,23 @@
                         sessionStorage.setItem("uname",result.unameList);
                         if(result.roleList=='employee')
                         {
+                            sessionStorage.setItem("upwd",result.pwdList)
+                            sessionStorage.setItem("id",result.idList)
                             sessionStorage.setItem("uname",result.unameList);//将用户名读进来传入下一页
                             sessionStorage.setItem("role",result.roleList);
                             sessionStorage.setItem("email",result.emailList);
                             window.location.href="employee.html";}
                         if(result.roleList=='admin'){
+                            sessionStorage.setItem("upwd",result.pwdList)
+                            sessionStorage.setItem("id",result.idList)
                             sessionStorage.setItem("uname",result.unameList);//将用户名读进来传入下一页
                             sessionStorage.setItem("role",result.roleList);
                             sessionStorage.setItem("email",result.emailList);
                             window.location.href="admin.html";
                         }
                         if(result.roleList=='checker'){
+                            sessionStorage.setItem("upwd",result.pwdList)
+                            sessionStorage.setItem("id",result.idList)
                             sessionStorage.setItem("uname",result.unameList);//将用户名读进来传入下一页
                             sessionStorage.setItem("role",result.roleList);
                             sessionStorage.setItem("email",result.emailList);
@@ -174,7 +180,7 @@
                         </div>
                         <div align="center" class="layui-form-item">
                             <a href="javascript:login()" class="layui-btn layui-btn-normal">登录</a>
-                            <a href="#" class="layui-btn layui-btn-danger">重置</a>
+                            <a href="#" class="layui-btn layui-btn-danger">找回密码</a>
                         </div>
                     </form>
                 </div>

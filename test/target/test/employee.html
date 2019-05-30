@@ -12,15 +12,37 @@
                 layer.msg("非法用户，请登录！");
                 // window.location.href="index.html";
                 setInterval("window.location.href=\"index.html\"",1000);
-            }else {
+               return
+            }
+            if(sessionStorage.getItem("role")!="employee"){
+                layer.msg("您不是职工，无法登陆此页面")
+                setInterval("window.location.href=\"index.html\"",1000)            }
+            else {
                 var uname = sessionStorage.getItem("uname");
                 $("#loginName").html(uname);
             }
         })
+        function loadPwdPage() {
+            var upwd=sessionStorage.getItem("upwd")
+            var id=sessionStorage.getItem("id")
+            //var uname=sessionStorage.getItem("uname")
+            //var role=sessionStorage.getItem("role")
+            //var email=sessionStorage.getItem("email")
+            sessionStorage.setItem("upwd",upwd)
+            //sessionStorage.setItem("aduname",uname)
+            sessionStorage.setItem("id",id)
+            //sessionStorage.setItem("adrole",role)
+            //sessionStorage.setItem("ademail",email)
+            // alert(uname)
+            $("#mainFrame").load("changePwd.html");
+
+        }
         function loaduserPage() {
+            var id=sessionStorage.getItem("id")
             var uname=sessionStorage.getItem("uname")
             var role=sessionStorage.getItem("role")
             var email=sessionStorage.getItem("email")
+            sessionStorage.setItem("id",id)
             sessionStorage.setItem("aduname",uname)
             sessionStorage.setItem("adrole",role)
             sessionStorage.setItem("ademail",email)
@@ -53,7 +75,7 @@
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="javascript:loaduserPage();"><span class="layui-icon layui-icon-auz"></span>个人中心</a></dd>
-                    <dd><a href=""><span class="layui-icon layui-icon-password"></span>修改密码</a></dd>
+                    <dd><a href="javascript:loadPwdPage();"><span class="layui-icon layui-icon-password"></span>修改密码</a></dd>
                 </dl>
             </li>
             <li class="layui-nav-item"><a href="javaScript:exit();">退出</a></li>

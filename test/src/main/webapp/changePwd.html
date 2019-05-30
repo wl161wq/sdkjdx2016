@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>个人中心</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="layui3.4/css/layui.css" media="all">
+    <script>
+        $(function () {
+            var uname=sessionStorage.getItem("aduname");
+            $("#uname").val(uname)
+        })
+        function checkUserPwd() {
+            var oupwd=$("#oupwd").val()
+            if (oupwd.length == 0) {
+                layer.tips("密码不能为空!", "#oupwd", {time: 3000, tips: [2, "#FF0000"]});
+                return;
+            }
+            if (oupwd.length < 6) {
+                layer.tips("密码不能少于6位!", "#oupwd", {time: 3000, tips: [2, "#FF0000"]});
+                return;
+            }
+            var nupwd=$("#nupwd").val()
+            if (nupwd.length == 0) {
+                layer.tips("密码不能为空!", "#nupwd", {time: 3000, tips: [2, "#FF0000"]});
+                return;
+            }
+            if (nupwd.length < 6) {
+                layer.tips("密码不能少于6位!", "#nupwd", {time: 3000, tips: [2, "#FF0000"]});
+                return;
+            }
+            $.ajax({
+                url: "user/login.do",
+                data: {
+                    "uname":sessionStorage.getItem("aduname"),
+                    "upwd": $("#oupwd").val(),
+                },
+                method: "post",
+                success: function (result1) {//这是回调函数
+                    var result=JSON.parse(result1)
+                   //alert(result.unameList)
+                    if(result.unameList.length>0){
+                        updateUserPwd()
+                }
+                    else {
+                        layer.msg("原密码输入不正确")
+
+                    }
+                 },
+                error: function () {
+                    layer.msg("请求服务器失败!");
+                }
+            });
+        }
+        function updateUserPwd() {
+            $.ajax({
+                url: "user/changeUserPwd.do",
+                data: {
+                    "uname": sessionStorage.getItem("aduname"),
+                    "upwd": $("#nupwd").val(),
+                },
+                method: "post",
+                success: function (result) {//这是回调函数
+                    layer.msg("修改"+result)
+                    location.reload()
+                },
+                error: function () {
+                    layer.msg("请求服务器失败!");
+                }
+            });
+
+        }
+        function back() {
+            location.reload()
+        }
+
+
+    </script>
+</head>
+<body>
+<br><br><br><br>
+<center>
+    <div style="width: 45%">
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+            <legend>修改密码</legend>
+        </fieldset>
+        <div class="layui-tab">
+            <ul class="layui-tab-title">
+                <li class="layui-this">修改个人密码</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">用户名</label>
+                            <div class="layui-input-block">
+                                <input type="text" readonly id="uname" name="uname" lay-verify="uname" autocomplete="off"
+                                       class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">请输入密码</label>
+                            <div class="layui-input-block">
+                                <input type="password"  id="oupwd" name="oupwd" lay-verify="oupwd" autocomplete="off"
+                                       class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">请输入新密码</label>
+                            <div class="layui-input-block">
+                                <input type="password"  id="nupwd" name="nupwd" lay-verify="nupwd" autocomplete="off"
+                                       class="layui-input">
+                            </div>
+                        </div>
+                        <div align="center" class="layui-form-item">
+                            <a href="javascript:checkUserPwd();" class="layui-btn layui-btn-normal">修改</a>
+                            <a href="javascript:back();" class="layui-btn layui-btn-danger">返回</a>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</center>
+<div class="layui-footer" align="center">
+    <br>
+    &copy;2018-2019 山东科技大学
+</div>
+</body>
+</html>

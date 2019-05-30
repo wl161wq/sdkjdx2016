@@ -20,6 +20,47 @@
             $("#r_email").val(email)
             $("#r_role").val(role)
         })
+        function reset() {
+            $("#r_uname").val("")
+            $("#r_email").val("")
+            $("#r_role").val("")
+        }
+        function updateUserInfo(){
+            var uname =$("#r_uname").val();
+            if (uname.length == 0) {
+                layer.tips("用户名不能为空!", "#r_uname", {time: 3000, tips: [2, "#FF0000"]});
+                return;
+            }
+            var reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+            var email=jQuery("#r_email").val();
+            if(!reg.test(email)){
+                layer.tips("Email输入有误，请检查!", "#r_email", {time: 3000, tips: [2, "#FF0000"]});
+                return;
+            }
+            var role=jQuery("#r_role").val();
+            if (role.length == 0) {
+                layer.tips("请选择角色!", "#r_role", {time: 3000, tips: [2, "#FF0000"]});
+                return;
+            }
+            $.ajax({
+                url: "user/updateUserInfo.do",
+                data: {
+                    "id":sessionStorage.getItem("id"),
+                    "uname": $("#r_uname").val(),
+                    "role": $("#r_role").val(),
+                    "email":$("#r_email").val()
+                },
+                method: "post",
+                success: function (result) {//这是回调函数
+                    layer.alert("修改" + result);
+                    location.reload()
+                },
+                error: function () {
+                    layer.msg("请求服务器失败!");
+                }
+            });
+        }
+
     </script>
 </head>
 <body>
@@ -85,8 +126,8 @@
                         </div>
 
                         <div align="center" class="layui-form-item">
-                            <a href="" class="layui-btn layui-btn-normal">修改</a>
-                            <a href="#" class="layui-btn layui-btn-danger">重置</a>
+                            <a href="javascript:updateUserInfo();" class="layui-btn layui-btn-normal">修改</a>
+                            <a href="javascript:reset();" class="layui-btn layui-btn-danger">重置</a>
                         </div>
                     </form>
                 </div>
@@ -96,6 +137,6 @@
 </center>
 <div class="layui-footer" align="center">
     <br>
-
+</div>
 </body>
 </html>

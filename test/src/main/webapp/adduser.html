@@ -37,12 +37,18 @@
                 method: "post",
                 success: function (result) {//这是回调函数
                     layer.alert("添加" + result);
-                    window.location.href="adduser.html";
+                    $("#uname").val("")
+                    $("#email").val("")
+                    $("#role").val("")
+                    //window.location.href="adduser.html";
                 },
                 error: function () {
                     layer.msg("请求服务器失败!");
                 }
             });
+        }
+        function back() {
+            location.reload()
         }
         // function backto() {
         //     // var aduname=sessionStorage.getItem("aduname")
@@ -78,7 +84,7 @@
                             <label class="layui-form-label">邮箱</label>
                             <div class="layui-input-block">
                                 <input type="text" id="email" name="email" lay-verify="email" autocomplete="off"
-                                       placeholder="请输入用户名" class="layui-input">
+                                       placeholder="请输入邮箱" class="layui-input">
                             </div>
                         </div>
 
@@ -107,14 +113,14 @@
 <!--                                        </select>-->
                                         <input type="text"  id="role" name="role" lay-verify="role"
                                                autocomplete="off"
-                                               placeholder="请输入邮箱" class="layui-input">
+                                               placeholder="请输入角色" class="layui-input">
                                     </div>
 
 <!--                            </div>-->
                         </div>
                         <div align="center" class="layui-form-item">
                             <a href="javascript:adduser()" class="layui-btn layui-btn-normal">添加</a>
-                            <a href="admin.html" class="layui-btn layui-btn-danger">返回</a>
+                            <a href="javascript:back()" class="layui-btn layui-btn-danger">返回</a>
                         </div>
                     </form>
                 </div>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="layui3.4/css/layui.css"/>
+    <script type="text/javascript" src="layui3.4/layui.all.js"></script>
+    <script type="text/javascript" src="jquery3.4.1/jquery-3.4.1.js"></script>
+    <script type="text/javascript" src="echarts/echarts.min.js"></script>
+    <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            bar();
+            pie();
+        })
+        function bar() {
+            $.ajax({
+                url:"equ/equTotal.do",
+                success:function (data) {
+                    var result=JSON.parse(data)
+                    var mychart=echarts.init(document.getElementById("bar"));
+                    var option = {
+                        title: {
+                            text: '科室设备数量分析'
+                        },
+                        tooltip: {},
+                        legend: {
+                            data:['数量']
+                        },
+                        xAxis: {
+                            data: result.dep_ofList
+                        },
+                        yAxis: {},
+                        series: [{
+                            type: 'bar',
+                            data: result.countList
+                        }]
+                    };
+                    mychart.setOption(option);
+                },
+                error:function () {
+                    layer.msg("请求服务器失败")
+                }
+            })
+        }
+        function pie() {
+            $.ajax({
+                url:"equ/equTotal.do",
+                success:function (data) {
+                    var result=JSON.parse(data)
+                    var mychart=echarts.init(document.getElementById("pie"));
+                    var option = {
+                        title: {
+                            text: '科室设备数量分析'
+                        },
+                        tooltip: {},
+                        series: [{
+                            type: 'pie',
+                            readius:'55%',
+                            data: [
+                                {value:result.countList[0],name:result.dep_ofList[0]},
+                                {value:result.countList[1],name:result.dep_ofList[1]},
+                                {value:result.countList[2],name:result.dep_ofList[2]},
+                                {value:result.countList[3],name:result.dep_ofList[3]},
+                                {value:result.countList[4],name:result.dep_ofList[4]}
+                            ]
+                        }]
+                    };
+                    mychart.setOption(option);
+
+                },
+                error:function () {
+                    layer.msg("请求服务器失败")
+                }
+            })
+        }
+
+    </script>
+
+</head>
+<body>
+<div class="row">
+    <div class="layui-col-xs6">
+        <div class="layui-card">
+            <div class="layui-card-header">
+                科室设备数量统计-柱状图
+            </div>
+            <div class="layui-card-body" id="bar" style="height: 400px;width: 100%;" >
+
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-xs6">
+        <div class="layui-card">
+            <div class="layui-card-header">
+                科室设备数量统计-饼图
+            </div>
+            <div class="layui-card-body" id="pie" style="height: 400px;width: 100%;" >
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

@@ -4,11 +4,14 @@
     <select id="login" parameterType="map" resultType="map">
         select * from tb_user where uname=#{uname} and upwd=md5(#{upwd});
     </select>
-    <select id="searchUserInfoByUname" parameterType="string" resultType="map">
-        SELECT * FROM tb_user WHERE uname LIKE CONCAT(CONCAT('%',#{username},'%'));
+    <select id="searchUserInfoByUname" parameterType="map" resultType="map">
+        SELECT * FROM tb_user WHERE uname LIKE CONCAT(CONCAT('%',#{uname},'%'))or role like concat(CONCAT('%',#{name},'%')) limit #{page},#{pageSize};
     </select>
     <update id="updateLoginTime" parameterType="string">
         update tb_user set lastLoginTime=now() where uname=#{uname}
+    </update>
+    <update id="changeUserPwd" parameterType="map">
+        update tb_user set upwd=md5(#{upwd}) where uname=#{uname}
     </update>
     <update id="updateUserInfo" parameterType="map">
         update tb_user set uname=#{uname} ,email=#{email},role=#{role} where id=#{id};

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isoft.mapping.equMapper">
+    <update id="updateEquInfo" parameterType="map">
+        update tb_dep set num=#{num} ,equ_status=#{equ_status},check_status=#{check_status},check_f=#{check_f},lastcheckTime=now()  where id=#{id};
+    </update>
+    <insert id="insertday" parameterType="map" >
+        insert into tb_dayrz(id,checker,equ,lastcheckTime)
+        values(null,#{checker},#{equ},now());
+    </insert>
+    <insert id="addEqu" parameterType="map" >
+        INSERT into tb_dep(id,equ,Manager_cla,dep_of,num,impTime,proTime,equ_d,lastcheckTime,equ_status
+        ,check_status,check_f)
+        VALUES(null,#{equ},#{Manager_cla},#{dep_of},#{num},NOW(),'2019-05-01 00:00:00',
+        '30',NOW(),'1','0',#{check_f})
+    </insert>
+    <select id="findChcekequ" parameterType="map" resultType="map">
+        select id,equ,dep_of,num,lastcheckTime,equ_status from  tb_dep
+        where equ_status='0'
+        limit #{page},#{pageSize}
+    </select>
+    <select id="findAllequ" parameterType="map" resultType="map">
+        select * from  tb_dep limit #{page},#{pageSize}
+    </select>
+    <select id="findequCount" resultType="map">
+        select count(*) as `count` from tb_dep;
+    </select>
+    <select id="findcheck" parameterType="map" resultType="map">
+        select * from  tb_dayrz limit #{page},#{pageSize}
+    </select>
+    <select id="findcheckCount" resultType="map">
+        select count(*) as `count` from tb_dayrz;
+    </select>
+    <select id="deleteequInfoById" parameterType="int">
+        delete from tb_dep where id=#{id};
+    </select>
+    <select id="searchEuqByEqu" parameterType="map"  resultType="map" >
+        SELECT * from tb_dep
+        where equ like concat(CONCAT('%',#{equ},'%'))or dep_of like concat(CONCAT('%',#{equ},'%'))limit #{page},#{pageSize};
+    </select>
+    <select id="equTotal" resultType="map">
+        select
+        CASE
+        when dep_of='基础外科' then '基础外科'
+        when dep_of='眼科' then '眼科'
+        when dep_of='心血管外科' then '心血管外科'
+		when dep_of='注射穿刺器械' then '注射穿刺器械'
+		when dep_of='骨科' then '骨科'
+        end as dep_of,
+        count(*) as count from tb_dep GROUP BY dep_of;
+    </select>
+</mapper>

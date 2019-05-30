@@ -14,6 +14,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/user")
+
 public class UserAction {
     @Autowired
     IUserService userService;
@@ -25,10 +26,14 @@ public class UserAction {
         Map map=new HashMap();
         List roleList=new ArrayList();
         List emailList=new ArrayList();
+        List idList=new ArrayList();
+        List pwdList=new ArrayList();
        // List regeisterTimeList=new ArrayList();
        // List lastLoginTimeList=new ArrayList();
         List unameList=new ArrayList();
         for(Map mp :list){
+            pwdList.add(mp.get("upwd"));
+            idList.add(mp.get("id"));
             roleList.add(mp.get("role"));
             unameList.add(mp.get("uname"));
             emailList.add(mp.get("email"));
@@ -36,6 +41,8 @@ public class UserAction {
             //lastLoginTimeList.add(map.get("lastLoginTime"));
 
         }
+        map.put("pwdList",pwdList);
+        map.put("idList",idList);
         map.put("roleList",roleList);
         map.put("unameList",unameList);
         map.put("emailList",emailList);
@@ -47,15 +54,17 @@ public class UserAction {
     }
     @RequestMapping("/searchUserInfoByUname.do")
     @ResponseBody
-    public Map<String,Object>searchUserInfoByUname(String uname) {
-        List<Map<String ,Object>> list=userService.searchUserInfoByUname(uname);
-        Map map=new HashMap();
-        map.put("code", 0);
-        map.put("msg", "用户信息");
-        map.put("data", list);
-        return map;
-//        List<Map<String ,Object>> list=userService.searchUserInfoByUname(uname);
+    public Map<String,Object> searchUserInfoByUname(int page,int limit,String uname) {
+        List<Map<String ,Object>> list=userService.searchUserInfoByUname(page,limit,uname);
+        Map<String,Object> userCount=userService.findUserCount();
 //        Map map=new HashMap();
+//        map.put("code", 0);
+//        map.put("msg", "用户信息");
+//        map.put("count", userCount.get("count"));
+//        map.put("data", list);
+//        return map;
+//        List<Map<String ,Object>> list=userService.searchUserInfoByUname(uname);
+        Map map=new HashMap();
 //        List roleList=new ArrayList();
 //        List emailList=new ArrayList();
 //        List regeisterTimeList=new ArrayList();
@@ -68,12 +77,12 @@ public class UserAction {
 //            regeisterTimeList.add(mp.get("regeisterTime"));
 //            lastLoginTimeList.add(map.get("lastLoginTime"));
 //        }
+        map.put("code",0);
+        map.put("msg","用户信息");
 //        map.put("roleList",roleList);
-//        map.put("unameList",unameList);
-//        map.put("emailList",emailList);
-//        map.put("regeisterTimeList",regeisterTimeList);
-//        map.put("lastLoginTimeList",lastLoginTimeList);
-//        return map;//返回json格式数据，但是不能转换，因为找不到json消息转换器
+        map.put("data", list);
+        map.put("count",userCount.get("count"));
+        return map;//返回json格式数据，但是不能转换，因为找不到json消息转换器
     }
 
     @RequestMapping("/register.do")
@@ -82,6 +91,16 @@ public class UserAction {
         /*硬编码*/
         boolean temp = userService.register(uname,upwd,email);
           if (temp)
+            return "success";
+        else
+            return "fault";
+    }
+    @RequestMapping("/changeUserPwd.do")
+    @ResponseBody
+    public String changeUserPwd(String uname, String upwd) {
+        /*硬编码*/
+        boolean temp = userService.changeUserPwd(uname,upwd);
+        if (temp)
             return "success";
         else
             return "fault";

@@ -17,6 +17,22 @@ $(function () {
     $("#email").val(email)
 })
 function editUserInfo() {
+    var uname =$("#uname").val();
+    if (uname.length == 0) {
+        layer.tips("用户名不能为空!", "#uname", {time: 3000, tips: [2, "#FF0000"]});
+        return;
+    }
+    var reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+    var email=jQuery("#email").val();
+    if(!reg.test(email)){
+        layer.tips("Email输入有误，请检查!", "#email", {time: 3000, tips: [2, "#FF0000"]});
+        return;
+    }
+    var role=jQuery("#role").val();
+    if (role.length == 0) {
+        layer.tips("请选择角色!", "#role", {time: 3000, tips: [2, "#FF0000"]});
+        return;
+    }
     $.ajax({
         url: "user/updateUserInfo.do",
         data: {
@@ -28,7 +44,7 @@ function editUserInfo() {
         method: "post",
         success: function (result) {//这是回调函数
             layer.alert("修改" + result);
-            window.location.href="admin.html";
+
         },
         error: function () {
             layer.msg("请求服务器失败!");
@@ -37,7 +53,10 @@ function editUserInfo() {
 
 }
 
+function back() {
 
+    location.reload()
+}
     </script>
 </head>
 <body>
@@ -50,7 +69,7 @@ function editUserInfo() {
         </fieldset>
         <div class="layui-tab">
             <ul class="layui-tab-title">
-                <li class="layui-this">修该用户</li>
+                <li class="layui-this">修改用户</li>
             </ul>
             <div class="layui-tab-content">
                 <div class="layui-tab-item layui-show">
@@ -72,27 +91,8 @@ function editUserInfo() {
 
 
                         <div class="layui-form-item">
-
-                            <!--                            <div class="layui-select-group">-->
-                            <!--                                <input type="" id="role" name="role" lay-verify="role" autocomplete="off"-->
-                            <!--                                       placeholder="请输入角色" class="layui-input">-->
-                            <!--                                <select name="role" lay-verify="role">-->
-                            <!--                                    <option value="">请选择角色</option>-->
-                            <!--                                    <option value="admin">管理员</option>-->
-                            <!--                                    <option value="checker">检修员</option>-->
-                            <!--                                    <option value="employee">职员</option>-->
-                            <!--                                </select>-->
-
                             <label class="layui-form-label">角色</label>
                             <div class="layui-input-block">
-                                <!--                                        <select name="city" lay-verify="required">-->
-                                <!--                                            <option value=""></option>-->
-                                <!--                                            <option value="0">北京</option>-->
-                                <!--                                            <option value="1">上海</option>-->
-                                <!--                                            <option value="2">广州</option>-->
-                                <!--                                            <option value="3">深圳</option>-->
-                                <!--                                            <option value="4">杭州</option>-->
-                                <!--                                        </select>-->
                                 <input type="text"  id="role" name="role" lay-verify="role"
                                        autocomplete="off"
                                        placeholder="请输入邮箱" class="layui-input">
@@ -102,7 +102,7 @@ function editUserInfo() {
                         </div>
                         <div align="center" class="layui-form-item">
                             <a href="javascript:editUserInfo()" class="layui-btn layui-btn-normal">修改</a>
-                            <a href="admin.html" class="layui-btn layui-btn-danger">返回</a>
+                            <a href="javascript:back()" class="layui-btn layui-btn-danger">返回</a>
                         </div>
                     </form>
                 </div>

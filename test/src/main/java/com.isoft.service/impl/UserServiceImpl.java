@@ -26,10 +26,11 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public List<Map<String, Object>> searchUserInfoByUname(String uname) {
+    public List<Map<String, Object>> searchUserInfoByUname(int page,int pageSize,String uname) {
         try {
-            List<Map<String,Object>> list=userDAO.searchUserInfoByUname(uname);
-            return list;
+//            List<Map<String,Object>> list=userDAO.searchUserInfoByUname(page,pageSize,uname);
+//            return list;
+            return userDAO.searchUserInfoByUname(page,pageSize,uname);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -52,6 +53,12 @@ public class UserServiceImpl implements IUserService {
     @Override
     public boolean updateUserInfo(String uname, String email, String role, int id) {
         boolean temp=userDAO.updateUserInfo(uname,email,role,id);
+        return temp;
+    }
+
+    @Override
+    public boolean changeUserPwd(String uname, String upwd) {
+        boolean temp=userDAO.changeUserPwd(uname,upwd);
         return temp;
     }
 
